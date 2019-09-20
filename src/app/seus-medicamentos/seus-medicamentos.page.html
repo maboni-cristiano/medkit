@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar color = "primary">
+        <ion-menu-button slot="start"></ion-menu-button>
+        <!-- <ion-title>Medicamentos</ion-title> -->
+        <ion-item class="row-filter" lines="none">
+            <ion-input
+                #searchbar 
+                searchIcon="false"
+                autocapitalize
+                placeholder="Pesquise Medicamentos"
+                clearInput 
+                [(ngModel)]="nome" 
+                (ionChange)="filtrarItens()" 
+                debounce=200
+                class="searchbar"
+            ></ion-input>
+        </ion-item>
+        
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-refresher slot="fixed" (ionRefresh)="atualizarMedicamentos($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"
+            refreshingSpinner="dots">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list>
+        <ion-item *ngFor="let medicamento of medicamentosFiltrados">
+            {{medicamento.nome}}
+        </ion-item>
+    </ion-list>
+
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="goAdicionarMedicamento()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</ion-content>

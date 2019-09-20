@@ -1,0 +1,36 @@
+<ion-content padding>
+    <div class="d-flex justify-content-center p-top-5">
+        <ion-img class="img-login" src="/assets/Medkit logo.jpg"></ion-img>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <ion-text>Informe suas credenciais</ion-text>
+    </div>
+
+    <form class="p-top-3" [formGroup]="loginForm">
+        <ion-list>
+            <ion-item>
+                <ion-label color="secondary" position="stacked">Email</ion-label>
+                <ion-input autocomplete="off" autofocus="true" formControlName="email" type="text" maxlength="100"
+                    [value]="email">
+                </ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-label color="secondary" position="stacked">Senha</ion-label>
+                <ion-input autocomplete="off" #ancoraSenha formControlName="senha" type="password" maxlength="12"
+                    minlength="6">
+                </ion-input>
+            </ion-item>
+        </ion-list>
+
+        <ion-button mode="md" expand="block" size="medium" (click)="fazerLogin()">Autenticar</ion-button>
+        <ion-list>
+            <ion-segment>
+                <ion-segment-button (click)="showNovoUsuario()">
+                    <ion-label>Novo Usuario</ion-label>
+                </ion-segment-button>
+            </ion-segment>
+        </ion-list>
+
+    </form>
+</ion-content>

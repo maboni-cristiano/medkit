@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "264469889059",
+    "firebase_url": "https://ionic-firestore-tasks-1.firebaseio.com",
+    "project_id": "ionic-firestore-tasks-1",
+    "storage_bucket": "ionic-firestore-tasks-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:264469889059:android:5b297b6fe95b6e78",
+        "android_client_info": {
+          "package_name": "br.com.TCC"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "264469889059-3iojmc934sbj0vmougulch9tl79uhlsi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMSOpPeQA0rYcmpkk19B9RXjOL8ePMVhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "264469889059-3iojmc934sbj0vmougulch9tl79uhlsi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

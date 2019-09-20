@@ -1,0 +1,145 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title color ="primary">Adicionar Medicamento</ion-title>
+    <ion-buttons slot= "start">
+      <ion-button (click)="cancelarMedicamento()">
+        <ion-icon name = "close" size = "large"></ion-icon>
+      </ion-button>
+      </ion-buttons>
+      <ion-buttons slot= "end">
+      <ion-button (click)="salvarMedicamento()">
+        <ion-icon name = "checkmark" size = "large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item-divider >
+  <h5><b>Medicamentos</b></h5>
+</ion-item-divider>
+<ion-card>
+  <ion-item>
+    <ion-input clearInput placeholder="Digite o nome do seu medicamento"></ion-input>
+
+<br>
+<br>
+<br>
+<br>
+  </ion-item>
+
+  <ion-card>
+  <ion-item >
+    <ion-label><b>Tipo de medicamento</b></ion-label>
+    <ion-select placeholder = "Selecione" cancelText="Cancelar" doneText="OK">
+      <ion-select-option value="continuo" for="toggle-1">Contínuo</ion-select-option>
+      <ion-select-option value="temporario">Temporário</ion-select-option>
+    </ion-select>
+
+<br>
+<br>
+<br>
+<br>
+
+  </ion-item>
+  </ion-card>
+<ion-card>
+<div class="pre-spoiler">
+
+      <input id="xs" value="Leia Mais" style="margin-left: 10px; padding: 0px;" onclick="if (this.parentNode.parentNode
+      .getElementsByTagName('div')[1]
+      .getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode
+      .getElementsByTagName('div')[1]
+      .getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Ocultar'; }
+      else { this.parentNode.parentNode
+      .getElementsByTagName('div')[1]
+      .getElementsByTagName('div')[0].style.display = 'none'; this.value = 'Leia Mais';}" type = checkbox> <b>Tratamento Temporário?</b> </div>
+
+
+    <div>
+
+      <div class="spoiler" style="display: none;">
+
+        <ion-item>
+    <ion-label><b>Duração</b></ion-label>
+    <ion-select placeholder = "Selecione" cancelText="Cancelar" doneText="OK">
+      <ion-select-option value="data">Até a Data</ion-select-option>
+      <ion-select-option value="xdias">Por X Dias</ion-select-option>
+    </ion-select>
+
+<br>
+<br>
+<br>
+<br>
+  </ion-item>
+
+      </div>
+
+    </div>
+  </ion-card>
+<ion-card>
+
+  <ion-item>
+    <ion-label><b>Horário</b></ion-label>
+    <ion-datetime placeholder="Selecione" cancelText="Cancelar" doneText="OK" display-format="HH:mm"></ion-datetime>
+    <ion-icon name="alarm" slot="end"></ion-icon>
+
+<br>
+<br>
+<br>
+<br>
+
+  </ion-item>
+</ion-card>
+</ion-card>
+    <ion-item-group>
+      <ion-item-divider>
+        <h5><b>Dosagem</b></h5>
+      </ion-item-divider>
+      <ion-card>
+<ion-card>
+      <ion-item>
+        <ion-label><b>Dosagem</b></ion-label>
+        <ion-select placeholder="Selecione" cancelText="Cancelar" doneText="OK">
+          <ion-select-option value="ML">ML</ion-select-option>
+          <ion-select-option value="xdias">Comprimidos</ion-select-option>
+        </ion-select>
+<br>
+<br>
+<br>
+<br>
+      </ion-item>
+      </ion-card>
+      <ion-item>
+        <ion-input type="number" placeholder="Quantidade de dosagem a tomar"></ion-input>
+        <br>
+        <br>
+        <br>
+        <br>
+      </ion-item>
+      </ion-card>
+<ion-card>
+  <ion-img src="/assets/tarjas.png"></ion-img>
+      <ion-button id="botaoEstoque" class="animated bounceInLeft delay 2s" color="primary" expand="block" size="medium"
+        (click)="openConfigurarEstoque()"><b>Configurar Estoque</b>
+        <ion-icon name="build" slot="end"></ion-icon>
+      </ion-button>
+      </ion-card>
+    </ion-item-group>
+
+    <ion-item-divider>
+      <h5><b>Família</b></h5>
+    </ion-item-divider>
+
+<ion-card>
+<ion-img src="/assets/familia.jpg"></ion-img>
+<ion-button class = "animated bounceInLeft delay 2s" color="primary" expand = "block" size="medium" (click)="adicionarEmail()"><b>Membro Familiar </b> <ion-icon name = "contacts" slot = "end"></ion-icon></ion-button>
+</ion-card>
+</ion-content>
+
+
+<ion-footer>
+  <ion-button class = "animated bounceInLeft delay 2s" color="primary" expand = "block" size="large" (click)="salvarMedicamento()" ><b>Salvar</b> <ion-icon name = "save" slot = "end"></ion-icon> </ion-button>
+  <ion-button class = "animated bounceInRight delay 2s" color="primary" expand = "block" size="large" (click)="cancelarMedicamento()"><b>Cancelar</b> <ion-icon name = "close" size = "large"></ion-icon></ion-button>
+<ion-footer>

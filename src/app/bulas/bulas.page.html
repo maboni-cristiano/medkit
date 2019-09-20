@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Procurar Bulas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-refresher slot="fixed" (ionRefresh)="atualizarBulas($event)">
+  <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"
+    refreshingSpinner="dots">
+
+  </ion-refresher-content>
+</ion-refresher>
+
+<ion-searchbar clearInput placeholder="Buscar Bula" [(ngModel)]="nome"
+  (ionInput)="filtrarItens()"></ion-searchbar>
+<ion-list>
+  <ion-item *ngFor="let bula of bulasFiltradas">
+    {{bula.nome}}
+  </ion-item>
+</ion-list>
+  <ion-item-divider>
+    <ion-title color="tertiary"><b>P</b></ion-title>
+  </ion-item-divider>
+
+<ion-card>
+  <ion-button id="Paracetamol" expand="block" href="https://consultaremedios.com.br/paracetamol/bula">
+<ion-icon name="list" slot="end"></ion-icon>
+    <b>Paracetamol</b>
+  </ion-button>
+
+  <ion-button id="Puran" expand="block" href="https://consultaremedios.com.br/puran-t4/p#bula">
+    <ion-icon name="list" slot="end"></ion-icon>
+    <b>Puran T4</b>
+  </ion-button>
+
+</ion-card>
+
+  <ion-item-divider>
+    <ion-title color="tertiary"><b>V</b></ion-title>
+  </ion-item-divider>
+
+  <ion-card>
+    <ion-button id="Venlafaxina" expand="block" href="https://consultaremedios.com.br/cloridrato-de-venlafaxina/bula">
+      <ion-icon name="list" slot="end"></ion-icon>
+      <b>Venlafaxina</b>
+    </ion-button>
+    </ion-card>
+
+</ion-content>

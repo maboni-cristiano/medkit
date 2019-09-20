@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Configurar Estoque</ion-title>
+     <ion-buttons slot= "end">
+      <ion-button (click)="salvarEstoque()">
+        <ion-icon name = "checkmark" size = "large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ <h5 text-center><b>Quantidade de remédios da caixa</b></h5>
+<ion-item>
+    <ion-input
+    type = "number" placeholder="Digite a quantidade do estoque"></ion-input>
+  </ion-item>
+ <h5 text-center><b>Lembrete de Reabastecimento</b></h5>
+  <ion-item>
+  <ion-range pin= "true" min = "1">
+    <ion-label slot = "start">min</ion-label>
+    <ion-label slot = "end">máx</ion-label>
+  </ion-range>
+</ion-item>
+</ion-content>

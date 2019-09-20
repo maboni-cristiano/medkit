@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Consultas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <br>
+  
+  <ion-button size = "large" expand="block" (click) = "openNovaConsulta()">
+    Nova Consulta
+    <ion-icon slot="start" name="add"></ion-icon>
+  </ion-button>
+  <br>
+  <ion-button size = "large" expand="block" (click) = "openAdicionarMedico()">
+      Adicionar Médico
+      <ion-icon slot="start" name="add"></ion-icon>
+  </ion-button>
+  <br>
+  <ion-button size = "large" expand="block" (click) = "openConsultasMarcadas()">
+      Consultas Marcadas
+      <ion-icon slot="start" name="add"></ion-icon>
+  </ion-button>
+  <ion-img src="/assets/medico.png"></ion-img>
+</ion-content>

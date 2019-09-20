@@ -1,0 +1,133 @@
+<ion-content padding>
+
+  <h1 text-center>
+    <ion-img
+      src="/assets/Medkit logo.jpg"
+      class="icon-7em"
+    ></ion-img>
+  </h1>
+
+  <form
+    [formGroup]="authForm"
+    (submit)="onSubmit(authProviders.Email)"
+  >
+
+    <ng-container *ngIf="!configs.isSignIn">
+      <ion-item>
+        <ion-icon
+          name="person"
+          color="primary"
+          slot="start"
+        ></ion-icon>
+        <ion-input
+          type="text"
+          placeholder="Nome"
+          formControlName="name"
+        ></ion-input>
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="name.dirty && name.hasError('required')"
+        >
+          Campo Obrigatório
+        </ion-note>
+
+        <ion-note
+          slot="end"
+          color="danger"
+          *ngIf="name.dirty && name.hasError('minlength')"
+        >
+          Mínimo de 3 Caracteres
+        </ion-note>
+      </ion-item>
+    </ng-container>
+    <ion-item>
+      <ion-icon
+        name="mail"
+        color="primary"
+        slot="start"
+      ></ion-icon>
+      <ion-input
+        type="email"
+        placeholder="E-mail"
+        formControlName="email"
+        inputmode="email"
+        autofocus="true"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('required')"
+      >
+        Campo Obrigatório
+      </ion-note>
+
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="email.dirty && email.hasError('email')"
+      >
+        Email Inválido
+      </ion-note>
+    </ion-item>
+
+    <ion-item>
+      <ion-icon
+        name="lock"
+        color="primary"
+        slot="start"
+      ></ion-icon>
+      <ion-input
+        type="password"
+        placeholder="Senha"
+        formControlName="password"
+      ></ion-input>
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="password.dirty && password.hasError('required')"
+      >
+        Campo Obrigatório
+      </ion-note>
+
+      <ion-note
+        slot="end"
+        color="danger"
+        *ngIf="password.dirty && password.hasError('minlength')"
+      >
+        Mínimo de 6 Caracteres
+      </ion-note>
+    </ion-item>
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="authForm.invalid"
+    >
+      {{ configs.action }}
+    </ion-button>
+  </form>
+
+  <ion-button
+    expand="block"
+    fill="outline"
+    (click)="changeAuthAction()"
+  >
+    {{ configs.actionChange }}
+  </ion-button>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <ion-button
+    expand="block"
+    color="medium"
+    (click)="onSubmit(authProviders.Facebook)"
+  >
+    <ion-icon
+      name="logo-facebook"
+      slot="start"
+    ></ion-icon>
+    Entrar pelo Facebook
+  </ion-button>
+</ion-content>

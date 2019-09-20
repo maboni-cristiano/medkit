@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color = "primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Início
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-img src="/assets/Medkit logo.jpg"></ion-img>
+    <br>
+    <ion-menu-toggle>
+    <ion-button class = "animated bounceInUp delay 12s" color ="primary" size = "large" expand="block">
+      <b>Começar</b>
+      </ion-button>
+    </ion-menu-toggle>
+
+    <ion-fab vertical="bottom" horizontal = "start">
+        <ion-fab-button color = "primary">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-list side = "top" horizontal ="start">
+          <ion-button shape = "round" color = "primary" size = "medium" (click) = "openSeusMedicamentos()">
+              <ion-icon slot="start" name="medkit"></ion-icon>
+                <ion-label><b>Seus Medicamentos</b></ion-label>
+              </ion-button>
+
+              <ion-button shape = "round" color = "primary" size = "medium" (click) = "openAdicionarMedicamento()">
+                  <ion-icon slot="start" name="add"></ion-icon>
+                    <ion-label><b>Adicionar Medicamento</b></ion-label>
+                  </ion-button>
+
+        </ion-fab-list>
+      </ion-fab>
+
+</ion-content>
