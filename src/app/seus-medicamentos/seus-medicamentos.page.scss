@@ -1,0 +1,18 @@
+ion-grid{
+    ion-row{
+        ion-col{
+            background-color: blue;
+            margin: 1px;
+        }
+    }
+}
+
+.row-filter {
+    --background: primary;
+    color: white;
+}
+
+.searchbar {
+    --placeholder-color: white;
+    --placeholder-opacity: 0.9;
+}
