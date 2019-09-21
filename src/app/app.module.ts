@@ -10,6 +10,7 @@ import { UsuarioService } from './services/usuario.service';
 import { MedicamentoService } from './services/medicamento.service';
 import { DataProviderService } from './services/data-provider.service';
 import { AuthGuard } from './services/auth.guard';
+import { NotificacaoService } from './services/notificacao.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,8 @@ import { AuthGuard } from './services/auth.guard';
     UsuarioService,
     MedicamentoService,
     DataProviderService,
-    AuthGuard
+    AuthGuard,
+    NotificacaoService
   ]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ import { NavController, AlertController, ModalController, Events } from '@ionic/
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UsuarioService } from '../services/usuario.service';
 import { UtilService } from '../services/util.service';
+import { MedicamentoService } from '../services/medicamento.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class AutenticacaoPage implements OnInit {
     private navController: NavController,
     private usuarioService: UsuarioService,
     private utilService: UtilService,
+    private medicamentoService: MedicamentoService
 ) {
 
 
@@ -64,6 +66,10 @@ export class AutenticacaoPage implements OnInit {
 
     this.usuarioService
         .login(this.loginForm.value)
+        .then(() => {
+            //adiciona notificações para todos os produtos, pq pode ser que ja tenha algum cadastrado, e esteja sem notificacao....
+            this.medicamentoService.adicionarNotificacaoParaTodosOsProdutos();
+        })
         .catch((error) => {
             this.utilService.showToast(error);
             console.log(error);

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UsuarioService } from './usuario.service';
+import { UtilService } from './util.service';
+import { NotificacaoService } from './notificacao.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +9,9 @@ import { UsuarioService } from './usuario.service';
 export class MedicamentoService {
 
   constructor(
-      private usuarioService: UsuarioService
+      private usuarioService: UsuarioService,
+      private utilService: UtilService,
+      private notificacaoService: NotificacaoService
   ) { }
 
   salvarMedicamento(data) {
@@ -22,6 +26,13 @@ export class MedicamentoService {
             }
 
             if (data.id) {
+                // localiza e seta todos os atributos ao medicamento, para remover as notificacoes.
+                collection.map((med) => {
+                    if (data.id !== med.id) {
+                        this.removerNotificacoesMedicamento(med);
+                    } 
+                })
+
                 //todos menos o id que esta editando.
                 collection = collection.filter((medBD) => {
                     return data.id !== medBD.id;
@@ -30,6 +41,7 @@ export class MedicamentoService {
                 data.id = new Date().getTime();
             } 
 
+            this.adicionarNotificacaoHorario(data);
             collection.push(data);
             localStorage.setItem(`${idUsuarioLogado}/medicamentos`, JSON.stringify(collection));
             resolve(data);
@@ -37,6 +49,72 @@ export class MedicamentoService {
             reject(e);
         }
     });
+  }
+
+  adicionarNotificacaoParaTodosOsProdutos() {
+    const idUsuarioLogado = this.usuarioService.getIdUsuarioLogado();
+    let dbMedicamentoCollectionText = localStorage.getItem(`${idUsuarioLogado}/medicamentos`);      
+    let collection = [];
+    
+    if (dbMedicamentoCollectionText) {
+        collection = JSON.parse(dbMedicamentoCollectionText);
+
+        for(let i=0; i<collection.length; i++) {
+            this.removerNotificacoesMedicamento(collection[i]);
+            this.adicionarNotificacaoHorario(collection[i]);
+        }
+    }
+  }
+
+  adicionarNotificacaoHorario(medicamento) {
+    if (medicamento) {
+        if (medicamento.horarios && medicamento.horarios.length > 0) {
+            console.log("entrou nos horarios")
+            for(let i=0; i<medicamento.horarios.length; i++) {
+                const horario = medicamento.horarios[i];
+
+                console.log("mostra o rabo", horario)
+
+                const id = medicamento.id + this.utilService.hashCode(horario);
+
+                console.log("id", id)
+
+                let minute = UtilService.timeToMinute(horario);
+
+                console.log("minute", minute)
+
+                //diminui 3 minutos para notificar..
+                minute = minute - 3;
+                let time = UtilService.minuteToObject(minute);
+
+                console.log("novo tempo", time)
+
+                this.notificacaoService
+                    .sendNotificacaoRepeatly(
+                        id,
+                        "Hora de se medicar!",
+                        `Lembre se de tomar seu medicamento: ${medicamento.nome} as ${horario}`,
+                        time.hour, 
+                        time.minute
+                    )
+
+                    console.log("passou...")
+            }
+        } 
+    }
+  }
+
+  removerNotificacoesMedicamento(medicamento) {
+    if (medicamento) {
+        if (medicamento.horarios && medicamento.horarios.length > 0) {
+            for(let i=0; i<medicamento.horarios.length; i++) {
+                const horario = medicamento.horarios[i];
+
+                const id = medicamento.id + this.utilService.hashCode(horario);
+                this.notificacaoService.removeNotification(id);
+            }
+        }
+    }
   }
 
   buscarTodosMedicamentos() {
@@ -62,6 +140,13 @@ export class MedicamentoService {
         let dbMedicamentoCollectionText = localStorage.getItem(`${idUsuarioLogado}/medicamentos`);      
         let collection = JSON.parse(dbMedicamentoCollectionText);
 
+        // localiza e seta todos os atributos ao medicamento, para remover as notificacoes.
+        collection.map((med) => {
+            if (medicamento.id !== med.id) {
+                medicamento = med;
+            } 
+        })
+
         let novaLista = collection.filter((medBD) => {
             return medicamento.id !== medBD.id;
         });
@@ -69,6 +154,8 @@ export class MedicamentoService {
         if (novaLista.length === collection.length) {
             return reject("Item não encontrado!");
         }  
+
+        this.removerNotificacoesMedicamento(medicamento);
 
         localStorage.setItem(`${idUsuarioLogado}/medicamentos`, JSON.stringify(novaLista));
         resolve(true);
