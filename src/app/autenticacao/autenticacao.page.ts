@@ -64,9 +64,6 @@ export class AutenticacaoPage implements OnInit {
 
     this.usuarioService
         .login(this.loginForm.value)
-        .then(() => {
-            this.navController.navigateForward('medicamentos');
-        })
         .catch((error) => {
             this.utilService.showToast(error);
             console.log(error);

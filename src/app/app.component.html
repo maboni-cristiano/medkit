@@ -1,24 +1,37 @@
 <ion-app>
-  <ion-split-pane>
-    <ion-menu>
-      <ion-header>
-        <ion-toolbar color = "primary">
-          <ion-title>Menu</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content>
-        <ion-list>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
-              <ion-icon slot="start" [name]="p.icon"></ion-icon>
-              <ion-label>
-                {{p.title}}
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet main></ion-router-outlet>
-  </ion-split-pane>
+    <ion-split-pane>
+        <ion-menu disabled={{!isLogged()}} >
+            <ion-content>
+                <div color="primary" class="d-flex header-menu flex-direction-column">
+                    <div class="align-self-center">
+                        <ion-img class="img-login" src="/assets/medicine.png"></ion-img>
+                    </div>
+                    <div style="padding-left: 20px;padding-top: 10px;" class="d-flex flex-direction-column">
+                        <span class="color-white font-size-1-5rem">MedKit APP</span>
+                        <span class="color-white">Ademi</span>
+                    </div>
+                </div>
+                <ion-list>
+                    <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
+                        <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+                            <ion-icon slot="start" [name]="p.icon"></ion-icon>
+                            <ion-label>
+                                {{p.title}}
+                            </ion-label>
+                        </ion-item>
+                    </ion-menu-toggle>
+                    
+                    
+                    <ion-item (click)="logout()">
+                        <ion-ripple-effect></ion-ripple-effect>
+                        <ion-icon slot="start" name="log-out"></ion-icon>
+                        <ion-label>Sair</ion-label>
+                    </ion-item>
+                </ion-list>
+                
+
+            </ion-content>
+        </ion-menu>
+        <ion-router-outlet main></ion-router-outlet>
+    </ion-split-pane>
 </ion-app>

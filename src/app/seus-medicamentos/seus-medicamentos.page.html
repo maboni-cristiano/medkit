@@ -1,21 +1,23 @@
 <ion-header>
     <ion-toolbar color = "primary">
         <ion-menu-button slot="start"></ion-menu-button>
-        <!-- <ion-title>Medicamentos</ion-title> -->
         <ion-item class="row-filter" lines="none">
             <ion-input
                 #searchbar 
-                searchIcon="false"
+                searchIcon="true"
                 autocapitalize
                 placeholder="Pesquise Medicamentos"
-                clearInput 
                 [(ngModel)]="nome" 
                 (ionChange)="filtrarItens()" 
                 debounce=200
                 class="searchbar"
             ></ion-input>
         </ion-item>
-        
+        <ion-buttons slot="end">
+            <ion-button class="animated fadeInRightBig" (click)="searchbar.setFocus()">
+                <ion-icon name="search"></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -28,13 +30,43 @@
     </ion-refresher>
 
     <ion-list>
-        <ion-item *ngFor="let medicamento of medicamentosFiltrados">
-            {{medicamento.nome}}
-        </ion-item>
+        <div class="d-flex flex-direction-column align-items-center div-empty-box" *ngIf="!medicamentosFiltrados || medicamentosFiltrados.length === 0">
+            <ion-img class="empty-box-img" src="/assets/box.png"></ion-img>
+            <ion-text>Nenhum medicamento encontrado...</ion-text>
+        </div>
+        <ion-card *ngFor="let medicamento of medicamentosFiltrados" (click)="showOptionsItem(medicamento)">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-grid>
+                <div class="d-flex align-items-center justify-content-space-between">
+                    <h5 class="nome-medicamento">{{medicamento.nome}}</h5>
+                    <ion-icon *ngIf="isMedicamentoEstoqueBaixo(medicamento)" color="warning" size="large" name="alert"></ion-icon>
+                </div>
+                <ion-row *ngIf="medicamento.horarios && medicamento.horarios.length > 0">
+                    <ion-col>
+                        <ion-text>
+                            Horários: {{medicamento.horarios}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col size="9">
+                        <ion-text *ngIf="medicamento.dosagem">
+                            Dosagem: {{medicamento.dosagem}}  {{medicamento.tipo_dosagem}} 
+                        </ion-text>
+                    </ion-col>
+                    <ion-col size="3">
+                        <ion-text *ngIf="medicamento.estoque" [color]="isMedicamentoEstoqueBaixo(medicamento) ? 'danger' : 'grey'">
+                            Estoque: {{medicamento.estoque}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+                
+        </ion-card>
     </ion-list>
 
 
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab class="animated jackInTheBox delay-1s" vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button (click)="goAdicionarMedicamento()">
             <ion-icon name="add"></ion-icon>
         </ion-fab-button>

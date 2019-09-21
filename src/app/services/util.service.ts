@@ -47,6 +47,33 @@ export class UtilService {
     await alert.present();
   }
 
+  async showAlertYesNoWithCallback(message: string, callbackYes, callbackNo, title = "Atenção") {
+    const alert = await this.alertCtrl.create({
+      header: title,
+      message: message,
+      buttons: [
+        {
+          text: 'Sim',
+          handler: () => {
+            if (callbackYes != null) {
+                callbackYes();
+            }
+          }
+        },
+        {
+            text: 'Não',
+            handler: () => {
+              if (callbackNo != null) {
+                callbackNo();
+              }
+            }
+          }
+      ]
+    });
+
+    await alert.present();
+  }
+
   async showLoading(message: string = 'Processando...') {
     const loading = await this.loadingCtrl.create({
       message: message

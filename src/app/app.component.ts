@@ -1,36 +1,72 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, NavController, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { UsuarioService } from './services/usuario.service';
+import { AuthGuard } from './services/auth.guard';
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html'
+    selector: 'app-root',
+    templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  public appPages = [
-    {
-      title: 'Início',
-      url: '/home',
-      icon: 'home',
-      color: 'tertiary'
-    },
-    {
-      title: 'Medicamentos',
-      url: '/medicamentos',
-      icon: 'medkit'
-    },
-    {
-      title: 'Consultas',
-      url: '/consultas',
-      icon: 'contacts'
-    },
-    {
-      title: 'Procurar Bulas',
-      url: '/bulas',
-      icon: 'paper'
+    public appPages = [
+        // {
+        //   title: 'Início',
+        //   url: '/home',
+        //   icon: 'home',
+        //   color: 'tertiary'
+        // },
+        {
+            title: 'Medicamentos',
+            url: '/seus-medicamentos',
+            icon: 'medkit'
+        },
+        {
+            title: 'Consultas',
+            url: '/consultas',
+            icon: 'contacts'
+        },
+        // {
+        //     title: 'Procurar Bulas',
+        //     url: '/bulas',
+        //     icon: 'paper'
+        // }
+    ];
+
+
+
+    constructor(
+        private usuarioService: UsuarioService,
+        private navController: NavController,
+        private menu: MenuController,
+    ) { 
+
+        this.usuarioService.authState.subscribe(state => {
+            if (state) {
+                this.navController.navigateRoot("seus-medicamentos");
+            } else {
+                this.navController.navigateRoot("autenticacao");
+            }
+        });
+
+        //verifica se esta logado.
+        this.usuarioService.ifLoggedIn();
     }
-  ];
-  constructor(
-  ){}
-  }
+
+    async logout() {
+        this.usuarioService.logout();
+
+        try {
+            const element = await this.menu.isOpen();
+            if (element) {
+                return this.menu.close();
+            }
+
+        } catch (error) { }
+    }
+
+    isLogged() {
+        return this.usuarioService.isAuthenticated();
+    }
+}

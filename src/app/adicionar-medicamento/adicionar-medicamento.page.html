@@ -1,145 +1,148 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title color ="primary">Adicionar Medicamento</ion-title>
-    <ion-buttons slot= "start">
-      <ion-button (click)="cancelarMedicamento()">
-        <ion-icon name = "close" size = "large"></ion-icon>
-      </ion-button>
-      </ion-buttons>
-      <ion-buttons slot= "end">
-      <ion-button (click)="salvarMedicamento()">
-        <ion-icon name = "checkmark" size = "large"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>Novo Medicamento</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="cancelarMedicamento()">
+                <ion-icon name="arrow-round-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button class="animated fadeInRightBig delay-1s" *ngIf="isEdicao()" (click)="excluirMedicamento()">
+                <ion-icon name="trash"></ion-icon>
+            </ion-button>
+            <ion-button class="animated fadeInRightBig" (click)="salvarMedicamento()">
+                <ion-icon name="checkmark"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <form [formGroup]="medicamentoForm">
+        <ion-card class="p-top-2">
+            <ion-img src="/assets/tarjas.png"></ion-img>
+            <ion-item>
+                <ion-input 
+                    class="margin-default" 
+                    clearInput 
+                    autofocus="true" 
+                    placeholder="Digite o nome do seu medicamento"
+                    formControlName="nome"
+                ></ion-input>
+            </ion-item>
 
-  <ion-item-divider >
-  <h5><b>Medicamentos</b></h5>
-</ion-item-divider>
-<ion-card>
-  <ion-item>
-    <ion-input clearInput placeholder="Digite o nome do seu medicamento"></ion-input>
-
-<br>
-<br>
-<br>
-<br>
-  </ion-item>
-
-  <ion-card>
-  <ion-item >
-    <ion-label><b>Tipo de medicamento</b></ion-label>
-    <ion-select placeholder = "Selecione" cancelText="Cancelar" doneText="OK">
-      <ion-select-option value="continuo" for="toggle-1">Contínuo</ion-select-option>
-      <ion-select-option value="temporario">Temporário</ion-select-option>
-    </ion-select>
-
-<br>
-<br>
-<br>
-<br>
-
-  </ion-item>
-  </ion-card>
-<ion-card>
-<div class="pre-spoiler">
-
-      <input id="xs" value="Leia Mais" style="margin-left: 10px; padding: 0px;" onclick="if (this.parentNode.parentNode
-      .getElementsByTagName('div')[1]
-      .getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode
-      .getElementsByTagName('div')[1]
-      .getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Ocultar'; }
-      else { this.parentNode.parentNode
-      .getElementsByTagName('div')[1]
-      .getElementsByTagName('div')[0].style.display = 'none'; this.value = 'Leia Mais';}" type = checkbox> <b>Tratamento Temporário?</b> </div>
+            <ion-card class="padding-default">
+                <ion-item lines="none">
+                    <ion-label><b>Tipo de medicamento</b></ion-label>
+                    <ion-select 
+                        placeholder="Selecione" 
+                        cancelText="Cancelar" 
+                        doneText="OK"
+                        formControlName="tipo_medicamento"
+                    >
+                        <ion-select-option value="continuo" for="toggle-1">Contínuo</ion-select-option>
+                        <ion-select-option value="temporario">Temporário</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-card>
+            
+            <ion-card *ngIf="visualizarDuracao()" class="padding-default">
+                <ion-item lines="none">
+                    <ion-label><b>Utilizar Até</b></ion-label>
+                    <ion-datetime 
+                        min="2018-01"
+                        max="2030"                
+                        displayFormat="DD/MM/YYYY"
+                        pickerFormat= "DD MMM YYYY"
+                        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+                        doneText="OK" 
+                        cancelText="Cancelar"
+                        placeholder="Selecione"
+                        formControlName="duracao"
+                    ></ion-datetime>
+                </ion-item>
+            </ion-card>
 
 
-    <div>
+            <ion-card class="padding-default">
+                <ion-item lines="none">
+                    <ion-label><b>Horário Utilização</b></ion-label>
+                    <ion-datetime 
+                        placeholder="Adicionar" 
+                        cancelText="Cancelar" 
+                        doneText="OK" 
+                        display-format="HH:mm"
+                        minuteValues="0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55"
+                        (ionChange)="addHorario($event)"
+                    ></ion-datetime>
+                </ion-item>
+            </ion-card>
+            <ion-list>
+                <div text-center lines="none" *ngIf="getValueForm('horarios').length == 0" class="d-flex justify-content-center">
+                    <p class="disable-text">Informe os horarios de utilização..</p>
+                </div>
+                <ion-card class="padding-default" *ngFor="let horario of getValueForm('horarios')">
+                    <ion-item lines="none">
+                        <ion-label slot="start">{{horario}}</ion-label>
+                        <ion-button slot="end" color="danger" fill="clear" (click)="removerHorario(horario)">
+                            Remover
+                        </ion-button>
+                    </ion-item>
+                </ion-card>
+            </ion-list>
+        </ion-card>
 
-      <div class="spoiler" style="display: none;">
+        <ion-item-group>
+            <ion-card>
+                <ion-card class="padding-default">
+                    <ion-item lines="none">
+                        <ion-label><b>Dosagem</b></ion-label>
+                        <ion-select 
+                            placeholder="Selecione" 
+                            cancelText="Cancelar" 
+                            doneText="OK"
+                            formControlName="tipo_dosagem"
+                        >
+                            <ion-select-option value="ML">ML</ion-select-option>
+                            <ion-select-option value="CP">Comprimidos</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-card>
 
-        <ion-item>
-    <ion-label><b>Duração</b></ion-label>
-    <ion-select placeholder = "Selecione" cancelText="Cancelar" doneText="OK">
-      <ion-select-option value="data">Até a Data</ion-select-option>
-      <ion-select-option value="xdias">Por X Dias</ion-select-option>
-    </ion-select>
+                <ion-item>
+                    <ion-input 
+                        class="margin-default" 
+                        type="number" 
+                        placeholder="Quantidade de dosagem a tomar"
+                        formControlName="dosagem"
+                    ></ion-input>
+                </ion-item>
+            </ion-card>
+        </ion-item-group>
 
-<br>
-<br>
-<br>
-<br>
-  </ion-item>
+        <ion-item-group class="p-bottom-5">
+            <ion-card>
+                <h5 class="title-estoque"><b>Quantidade em Estoque</b></h5>
+                <ion-item>
+                    <ion-input 
+                        type = "number" 
+                        placeholder="Informe a quantidade que possue"
+                        formControlName="estoque"    
+                    ></ion-input>
+                </ion-item>
 
-      </div>
-
-    </div>
-  </ion-card>
-<ion-card>
-
-  <ion-item>
-    <ion-label><b>Horário</b></ion-label>
-    <ion-datetime placeholder="Selecione" cancelText="Cancelar" doneText="OK" display-format="HH:mm"></ion-datetime>
-    <ion-icon name="alarm" slot="end"></ion-icon>
-
-<br>
-<br>
-<br>
-<br>
-
-  </ion-item>
-</ion-card>
-</ion-card>
-    <ion-item-group>
-      <ion-item-divider>
-        <h5><b>Dosagem</b></h5>
-      </ion-item-divider>
-      <ion-card>
-<ion-card>
-      <ion-item>
-        <ion-label><b>Dosagem</b></ion-label>
-        <ion-select placeholder="Selecione" cancelText="Cancelar" doneText="OK">
-          <ion-select-option value="ML">ML</ion-select-option>
-          <ion-select-option value="xdias">Comprimidos</ion-select-option>
-        </ion-select>
-<br>
-<br>
-<br>
-<br>
-      </ion-item>
-      </ion-card>
-      <ion-item>
-        <ion-input type="number" placeholder="Quantidade de dosagem a tomar"></ion-input>
-        <br>
-        <br>
-        <br>
-        <br>
-      </ion-item>
-      </ion-card>
-<ion-card>
-  <ion-img src="/assets/tarjas.png"></ion-img>
-      <ion-button id="botaoEstoque" class="animated bounceInLeft delay 2s" color="primary" expand="block" size="medium"
-        (click)="openConfigurarEstoque()"><b>Configurar Estoque</b>
-        <ion-icon name="build" slot="end"></ion-icon>
-      </ion-button>
-      </ion-card>
-    </ion-item-group>
-
-    <ion-item-divider>
-      <h5><b>Família</b></h5>
-    </ion-item-divider>
-
-<ion-card>
-<ion-img src="/assets/familia.jpg"></ion-img>
-<ion-button class = "animated bounceInLeft delay 2s" color="primary" expand = "block" size="medium" (click)="adicionarEmail()"><b>Membro Familiar </b> <ion-icon name = "contacts" slot = "end"></ion-icon></ion-button>
-</ion-card>
+                <h5 class="title-estoque"><b>Lembrete de Reabastecimento</b></h5>
+                <ion-item>
+                    <ion-range 
+                        pin= "true" 
+                        min = "1"
+                        formControlName="lembrete"
+                    >
+                        <ion-label slot = "start">min</ion-label>
+                        <ion-label slot = "end">máx</ion-label>
+                    </ion-range>
+                </ion-item>
+            </ion-card>
+        </ion-item-group>
+    </form>
 </ion-content>
-
-
-<ion-footer>
-  <ion-button class = "animated bounceInLeft delay 2s" color="primary" expand = "block" size="large" (click)="salvarMedicamento()" ><b>Salvar</b> <ion-icon name = "save" slot = "end"></ion-icon> </ion-button>
-  <ion-button class = "animated bounceInRight delay 2s" color="primary" expand = "block" size="large" (click)="cancelarMedicamento()"><b>Cancelar</b> <ion-icon name = "close" size = "large"></ion-icon></ion-button>
-<ion-footer>

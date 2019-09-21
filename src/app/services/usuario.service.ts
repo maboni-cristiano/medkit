@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UsuarioService {
     _usuarioCollection: any[] = [];
+    isLogged = false;
+
+    authState = new BehaviorSubject(false);
 
     constructor() { }
 
@@ -56,10 +60,33 @@ export class UsuarioService {
             });
 
             if (encontrouLogin && encontrouLogin.length > 0) {
+                localStorage.setItem('usuarioLogado', form.email);
+                this.authState.next(true);
                 return resolve(form);
             }
 
             reject('Usuário/senha inválido ou não encontrado.');
         });
+    }
+
+    getIdUsuarioLogado(): String {
+        return localStorage.getItem('usuarioLogado');
+    }
+
+    ifLoggedIn() {
+        let id = this.getIdUsuarioLogado();
+        
+        if (id) {
+            this.authState.next(true);
+        }
+    }
+
+    logout() {
+        localStorage.removeItem("usuarioLogado");
+        this.authState.next(false);
+    }
+    
+    isAuthenticated() {
+        return this.authState.value;
     }
 }
