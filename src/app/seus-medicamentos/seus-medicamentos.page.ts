@@ -3,6 +3,8 @@ import { NavController, ActionSheetController } from '@ionic/angular';
 import { MedicamentoService } from '../services/medicamento.service';
 import { UtilService } from '../services/util.service';
 import { DataProviderService } from '../services/data-provider.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 
 @Component({
     selector: 'app-seus-medicamentos',
@@ -21,6 +23,7 @@ export class SeusMedicamentosPage implements OnInit {
         private actionSheetCtrl: ActionSheetController, 
         public utilService: UtilService,
         public dataProvider: DataProviderService,
+        private iab: InAppBrowser,
     ) {}
 
     ngOnInit(){}
@@ -72,10 +75,53 @@ export class SeusMedicamentosPage implements OnInit {
                     }
                 },
                 {
+                    text: 'Registrar Uso',
+                    icon: 'pulse',
+                    handler: async () => {
+                        if (medicamento && medicamento.estoque) {
+                            let quantidade = medicamento.dosagem;
+
+                            if (!quantidade) {
+                                quantidade = 1;
+                            }
+
+                            if (medicamento.estoque > 0) {
+                                medicamento.estoque = medicamento.estoque - quantidade;
+                            }
+
+                            if (medicamento.estoque < 0) {
+                                medicamento.estoque = 0;
+                            }
+
+                            let loading = await this.utilService.showLoading();
+                            loading.present();
+
+                            this.medicamentoService
+                                .salvarMedicamento(medicamento)
+                                .then(() => {
+                                    this.utilService.showToast("Registrado uso com sucesso!")
+                                })
+                                .catch((error) => this.utilService.showToast(error))
+                                .finally(() => loading.dismiss())
+                        } else {
+                            
+                        }
+                    }
+                },
+                {
                     text: 'Procurar Bula',
                     icon: 'paper',
                     handler: () => {
-                        console.log("Abre o link", `https://consultaremedios.com.br/${medicamento.nome.toLowerCase()}/bula`)
+                        let nome = medicamento.nome;
+                        
+                        if (nome) {
+                            nome = nome.toLowerCase();
+                            nome = this.utilService.retira_acentos(nome);
+                            nome = nome.replace(" ", "-");
+
+                            const browser = this.iab.create(`https://consultaremedios.com.br/${nome}/bula`);
+                            browser.show()
+                        }
                     }
                 },
                 {
@@ -88,7 +134,11 @@ export class SeusMedicamentosPage implements OnInit {
                             () => {
                                 this.medicamentoService
                                     .excluirMedicamento(medicamento)
-                                    .then(() => this.buscarMedicamentos())
+                                    .then(async () =>  {
+                                        await this.buscarMedicamentos();
+                                        //gambiarra para atualizar a lista... nunca vi ter q fazer isso :(
+                                        document.getElementById("content-medicamentos").click();
+                                    })
                                     .catch((error) => this.utilService.showAlert(error))
                             }, 
                             null

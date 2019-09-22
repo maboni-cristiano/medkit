@@ -14,15 +14,14 @@
             ></ion-input>
         </ion-item>
         <ion-buttons slot="end">
-            <!-- <ion-button class="animated fadeInRightBig" (click)="searchbar.setFocus()"> -->
-            <ion-button class="animated fadeInRightBig" (click)="removeNotification()">
+            <ion-button class="animated fadeInRightBig" (click)="searchbar.setFocus()">
                 <ion-icon name="search"></ion-icon>
             </ion-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content id="content-medicamentos">
 
     <ion-refresher slot="fixed" (ionRefresh)="atualizarMedicamentos($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"

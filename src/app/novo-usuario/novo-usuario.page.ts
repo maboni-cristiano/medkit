@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, ModalController, Events, LoadingController } from '@ionic/angular';
+import { NavController, AlertController, ModalController, Events, LoadingController, Platform } from '@ionic/angular';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { UsuarioService } from '../services/usuario.service';
 import { UtilService } from '../services/util.service';
@@ -19,9 +19,13 @@ export class NovoUsuarioPage implements OnInit {
         private navController: NavController,
         private usuarioService: UsuarioService,
         private utilService: UtilService,
-        private loadingCtrl: LoadingController,
+        private platform: Platform
     ) {
 
+        // this.platform.backButton.subscribe(() => {
+        //     console.log("gobacjjjjj")
+        //     this.goBack();
+        // });
 
         this.form = formBuilder.group({
             nome: new FormControl('', Validators.compose([
@@ -41,7 +45,7 @@ export class NovoUsuarioPage implements OnInit {
             senha: new FormControl('', Validators.compose([
                 Validators.required,
                 Validators.maxLength(12),
-                Validators.minLength(6),
+                Validators.minLength(3),
             ])),
 
         })
@@ -66,7 +70,7 @@ export class NovoUsuarioPage implements OnInit {
         loadingCtrl.present();
 
         this.usuarioService
-            .adicionar(this.form.value)
+            .salvarUsuario(this.form.value)
             .then((response) => {
                 loadingCtrl.dismiss();
                 this.utilService.showAlertWithCallback('Operação realizada com sucesso!', () => this.navController.pop());

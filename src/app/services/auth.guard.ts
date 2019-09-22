@@ -6,18 +6,21 @@ import { NavController } from '@ionic/angular';
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
-        private usuarioService: UsuarioService,
         private navController: NavController,
 
     ) {}
 
     canActivate(): boolean {
-        const id = this.usuarioService.getIdUsuarioLogado();
+        const id = UsuarioService.getIdUsuarioLogado();
         if (id)
             return true;
       
         this.navController.navigateForward('autenticacao');
         return false;
+    }
+
+    public static getIdUsuarioLogado() {
+        return UsuarioService.getIdUsuarioLogado();
     }
 
     

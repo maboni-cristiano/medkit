@@ -14,6 +14,8 @@ const routes: Routes = [
   { path: 'adicionar-medico', loadChildren: './adicionar-medico/adicionar-medico.module#AdicionarMedicoPageModule' , canActivate: [AuthGuard] }, 
   { path: 'consultas-marcadas', loadChildren: './consultas-marcadas/consultas-marcadas.module#ConsultasMarcadasPageModule' , canActivate: [AuthGuard] }, 
   { path: 'novo-usuario', loadChildren: './novo-usuario/novo-usuario.module#NovoUsuarioPageModule' },
+  { path: 'configuracoes', loadChildren: './configuracoes/configuracoes.module#ConfiguracoesPageModule', canActivate: [AuthGuard] },
+//   { path: 'visualizar-notificacoes-pendentes', loadChildren: './visualizar-notificacoes-pendentes/visualizar-notificacoes-pendentes.module#VisualizarNotificacoesPendentesPageModule' },
 ];
 
 @NgModule({

@@ -1,28 +1,80 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Consultas</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color = "primary">
+        <ion-menu-button slot="start"></ion-menu-button>
+        <ion-item class="row-filter" lines="none">
+            <ion-input
+                #searchbar 
+                searchIcon="true"
+                autocapitalize
+                placeholder="Pesquise Consultas"
+                [(ngModel)]="nome" 
+                (ionChange)="filtrarItens()" 
+                debounce=200
+                class="searchbar"
+            ></ion-input>
+        </ion-item>
+        <ion-buttons slot="end">
+            <ion-button class="animated fadeInRightBig" (click)="searchbar.setFocus()">
+                <ion-icon name="search"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <br>
-  
-  <ion-button size = "large" expand="block" (click) = "openNovaConsulta()">
-    Nova Consulta
-    <ion-icon slot="start" name="add"></ion-icon>
-  </ion-button>
-  <br>
-  <ion-button size = "large" expand="block" (click) = "openAdicionarMedico()">
-      Adicionar Médico
-      <ion-icon slot="start" name="add"></ion-icon>
-  </ion-button>
-  <br>
-  <ion-button size = "large" expand="block" (click) = "openConsultasMarcadas()">
-      Consultas Marcadas
-      <ion-icon slot="start" name="add"></ion-icon>
-  </ion-button>
-  <ion-img src="/assets/medico.png"></ion-img>
+
+<ion-content id="content-consulta">
+
+    <ion-refresher slot="fixed" (ionRefresh)="atualizarLista($event)">
+        <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"
+            refreshingSpinner="dots">
+        </ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list>
+        <div class="d-flex flex-direction-column align-items-center div-empty-box" *ngIf="!listaFiltrada || listaFiltrada.length === 0">
+            <ion-img class="empty-box-img" src="/assets/box.png"></ion-img>
+            <ion-text>Nenhuma consulta encontrada...</ion-text>
+        </div>
+        <ion-card *ngFor="let consulta of listaFiltrada" (click)="showOptionsItem(consulta)">
+            <ion-ripple-effect></ion-ripple-effect>
+            <ion-grid>
+                <div class="d-flex align-items-center justify-content-space-between">
+                    <h5 class="desc-consulta">{{consulta.descricao}}</h5>
+                </div>
+                <ion-row>
+                    <ion-col size="8" *ngIf="consulta.data">
+                        <ion-text>
+                            Data: {{formatData(consulta.data)}}
+                        </ion-text>
+                    </ion-col>
+                    <ion-col size="4" *ngIf="consulta.hora">
+                        <ion-text>
+                            Hora: {{formatHora(consulta.hora)}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngIf="consulta.medico">
+                    <ion-col>
+                        <ion-text>
+                            Medico: {{consulta.medico}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+                <ion-row *ngIf="consulta.observacao">
+                    <ion-col>
+                        <ion-text>
+                            Observação: {{consulta.observacao}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card>
+    </ion-list>
+
+
+    <ion-fab class="animated jackInTheBox delay-1s" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="goFormulario()">
+            <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
 </ion-content>

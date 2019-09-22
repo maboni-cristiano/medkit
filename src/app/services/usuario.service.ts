@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { NotificacaoService } from './notificacao.service';
+import { Constants } from './constants';
+// import { ConsultaService } from './consulta.service';
+// import { MedicamentoService } from './medicamento.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,37 +14,66 @@ export class UsuarioService {
 
     authState = new BehaviorSubject(false);
 
-    constructor() { }
+    constructor(
+        private notificacaoService: NotificacaoService,
+        // private medicamentoService: MedicamentoService, 
+        // private consultaService: ConsultaService
+    ) { }
 
 
-    adicionar(form: any) {
+    salvarUsuario(usuarioForm: any, novoUsuario = true) {
         return new Promise<any>((resolve, reject) => {
+
             let dbUsuarioCollectionText = localStorage.getItem('usuarioCollection');
+            let adicionarTodasNotificacoes = false;
 
-            if (dbUsuarioCollectionText == null) {
-                this._usuarioCollection.push(form);
-
-                let convertJsonToText = JSON.stringify(this._usuarioCollection);
-
-                localStorage.setItem('usuarioCollection', convertJsonToText);
-            }
-            else {
+            if (dbUsuarioCollectionText != null) {
                 this._usuarioCollection = JSON.parse(dbUsuarioCollectionText);
 
-                let usuarioJaExiste = this._usuarioCollection.filter((usuario) => {
-                    return usuario.email == form.email;
-                });
+                if (novoUsuario) {
+                    let usuarioJaExiste = this._usuarioCollection.filter((usuario) => {
+                        return usuario.email == usuarioForm.email;
+                    });
+    
+                    if (usuarioJaExiste.length > 0) {
+                        reject('Usuario já existe');
+                        return;
+                    }
+                } else { //esta editando....
 
-                if (usuarioJaExiste.length > 0) {
-                    reject('Usuario já existe');
-                    return;
+                    let usuarioBD: any = this._usuarioCollection.filter((usuario) => {
+                        return usuario.email == usuarioForm.email;
+                    });
+
+                    if (usuarioBD && usuarioBD.length >= 0) {
+                        usuarioBD = usuarioBD[0];
+
+                        //NAO QUER MAIS RECEBER NOTIFICACAO
+                        if (usuarioBD.st_notificacao && usuarioBD.st_notificacao === "SIM" 
+                        && usuarioForm.st_notificacao && usuarioForm.st_notificacao === "NAO" ) {
+                            console.log("REMOVE TODAS AS NOTIFICACOES")
+                            this.notificacaoService.removeAllNotification();
+                        } else if (usuarioBD.st_notificacao && usuarioBD.st_notificacao === "NAO" 
+                        && usuarioForm.st_notificacao && usuarioForm.st_notificacao === "SIM" ) {
+                            console.log("ADICIONA TODAS AS NOTIFICACOES")
+                            // this.medicamentoService.adicionarNotificacaoParaTodosOsProdutos();
+                            // this.consultaService.adicionarNotificacaoParaTodasAsConsultas();
+                            // this.notificacaoService.addAllNotification();
+                            adicionarTodasNotificacoes = true;
+                        }
+                    }
+
+                    this._usuarioCollection = this._usuarioCollection.filter((usuario) => {
+                        return usuario.email != usuarioForm.email;
+                    });
                 }
-
-                this._usuarioCollection.push(form);
-                localStorage.setItem('usuarioCollection', JSON.stringify(this._usuarioCollection));
             }
 
-            resolve(form);
+            Constants.NOME_USUARIO = usuarioForm.nome;
+            this._usuarioCollection.push(usuarioForm);
+            localStorage.setItem('usuarioCollection', JSON.stringify(this._usuarioCollection));
+
+            resolve(adicionarTodasNotificacoes);
         });
     }
 
@@ -69,12 +102,28 @@ export class UsuarioService {
         });
     }
 
-    getIdUsuarioLogado(): String {
+    public static getIdUsuarioLogado(): String {
         return localStorage.getItem('usuarioLogado');
     }
 
+    getDadosUsuarioLogado() {
+        return new Promise((resolve, reject) => {
+            let dbUsuarioCollectionText = localStorage.getItem('usuarioCollection');
+            this._usuarioCollection = JSON.parse(dbUsuarioCollectionText);
+
+            let email = UsuarioService.getIdUsuarioLogado();
+
+            this._usuarioCollection.map((usuario) => {
+                if (usuario.email.toLowerCase() == email.toLowerCase())
+                    resolve(usuario);
+            });
+
+            reject('Caiu no reject....');
+        });
+    }
+
     ifLoggedIn() {
-        let id = this.getIdUsuarioLogado();
+        let id = UsuarioService.getIdUsuarioLogado();
         
         if (id) {
             this.authState.next(true);

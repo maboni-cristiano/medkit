@@ -81,7 +81,7 @@ export class UtilService {
         return loading;
     }
 
-    async showToast(message: string, duration = 2000) {
+    async showToast(message: string, duration = 3000) {
         const toast = await this.toastCtrl.create({
             message: message,
             duration: duration,
@@ -180,6 +180,29 @@ export class UtilService {
         
         return (hour * 60) + minute;
     }
+
+
+    retira_acentos(str) {
+        let com_acento = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝŔÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŕ";
+        let sem_acento = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYRsBaaaaaaaceeeeiiiionoooooouuuuybyr";
+    
+        let novastr = "";
+        for(let i=0; i<str.length; i++) {
+            let troca=false;
+            for (let a=0; a<com_acento.length; a++) {
+                if (str.substr(i,1)==com_acento.substr(a,1)) {
+                    novastr+=sem_acento.substr(a,1);
+                    troca=true;
+                    break;
+                }
+            }
+            if (troca==false) {
+                novastr+=str.substr(i,1);
+            }
+        }
+
+        return novastr;
+    } 
 
 
 }

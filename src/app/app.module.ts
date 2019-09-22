@@ -11,6 +11,8 @@ import { MedicamentoService } from './services/medicamento.service';
 import { DataProviderService } from './services/data-provider.service';
 import { AuthGuard } from './services/auth.guard';
 import { NotificacaoService } from './services/notificacao.service';
+import { ConsultaService } from './services/consulta.service';
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,7 +25,9 @@ import { NotificacaoService } from './services/notificacao.service';
     MedicamentoService,
     DataProviderService,
     AuthGuard,
-    NotificacaoService
+    NotificacaoService,
+    ConsultaService,
+    InAppBrowser
   ]
 })
 export class AppModule { }

@@ -1,13 +1,99 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Nova Consulta</ion-title>
-    <ion-menu-button slot = "start"></ion-menu-button>
-    <ion-buttons slot = "end">
-        <ion-back-button></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+        <ion-toolbar color="primary">
+            <ion-title>Consulta</ion-title>
+            <ion-buttons slot="start">
+                <ion-button (click)="goBack()">
+                    <ion-icon name="arrow-round-back"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end">
+                <ion-button class="animated fadeInRightBig delay-1s" *ngIf="isEdicao()" (click)="excluir()">
+                    <ion-icon name="trash"></ion-icon>
+                </ion-button>
+                <ion-button class="animated fadeInRightBig" (click)="salvar()">
+                    <ion-icon name="checkmark"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    
+    <ion-content>
+        <div class="d-flex justify-content-center p-top-2">
+            <ion-img style="max-width: 200px" src="/assets/medico.png"></ion-img>
+        </div>
+        
+        <form [formGroup]="form" class="p-bottom-5" >
+            <ion-card>
+                
+                <ion-item>
+                    <ion-label position="floating">Descrição</ion-label>
+                    <ion-input 
+                        class="margin-default" 
+                        clearInput 
+                        autofocus="true" 
+                        autocapitalize="on"
+                        placeholder="Digite um titulo para a consulta..."
+                        formControlName="descricao"
+                    ></ion-input>
+                </ion-item>
+            </ion-card>
+    
+            <ion-card>
+                <ion-item lines="none">
+                    <ion-label position="floating">Data da consulta</ion-label>
+                    <ion-datetime 
+                        min="2018-01"
+                        max="2030"                
+                        displayFormat="DD/MM/YYYY"
+                        pickerFormat= "DD MMM YYYY"
+                        monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
+                        doneText="OK" 
+                        cancelText="Cancelar"
+                        placeholder="Selecione"
+                        formControlName="data"
+                    ></ion-datetime>
+                </ion-item>
+            </ion-card>
 
-<ion-content>
-
-</ion-content>
+    
+                <ion-card>
+                    <ion-item lines="none">
+                        <ion-label position="floating">Hora da consulta</ion-label>
+                        <ion-datetime 
+                            placeholder="Adicionar" 
+                            cancelText="Cancelar" 
+                            doneText="OK" 
+                            display-format="HH:mm"
+                            formControlName="hora"
+                        ></ion-datetime>
+                    </ion-item>
+                </ion-card>
+            
+            
+            <ion-card>
+                <ion-item>
+                    <ion-label position="floating">Médico</ion-label>
+                    <ion-input 
+                        class="margin-default" 
+                        placeholder="Digite o nome do médico..."
+                        formControlName="medico"
+                        autocapitalize="on"
+                        clearInput
+                    ></ion-input>
+                </ion-item>
+            </ion-card>
+            <ion-card>
+                <ion-item>
+                    <ion-label position="floating">Observação</ion-label>
+                    <ion-textarea 
+                        autocapitalize="on"
+                        class="margin-default" 
+                        rows="6"
+                        clearInput
+                        placeholder="Informe uma observação se desejar..."
+                        formControlName="observacao"
+                    ></ion-textarea>
+                </ion-item>
+            </ion-card>
+        </form>
+    </ion-content>

@@ -1,6 +1,6 @@
 <ion-app>
     <ion-split-pane>
-        <ion-menu disabled={{!isLogged()}} >
+        <ion-menu disabled={{!isLogged()}} (ionDidOpen)="menuIonDidOpen()">
             <ion-content>
                 <div color="primary" class="d-flex header-menu flex-direction-column">
                     <div class="align-self-center">
@@ -8,7 +8,7 @@
                     </div>
                     <div style="padding-left: 20px;padding-top: 10px;" class="d-flex flex-direction-column">
                         <span class="color-white font-size-1-5rem">MedKit APP</span>
-                        <span class="color-white">Ademi</span>
+                        <span class="color-white">{{nomeUsuario}}</span>
                     </div>
                 </div>
                 <ion-list>
@@ -20,7 +20,6 @@
                             </ion-label>
                         </ion-item>
                     </ion-menu-toggle>
-                    
                     
                     <ion-item (click)="logout()">
                         <ion-ripple-effect></ion-ripple-effect>

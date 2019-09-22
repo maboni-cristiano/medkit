@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, NavController, AlertController, Platform } from '@ionic/angular';
-import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx';
+import { NavController } from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { UtilService } from '../services/util.service';
 import * as moment from 'moment';
@@ -17,16 +16,8 @@ export class AdicionarMedicamentoPage implements OnInit {
 
     public medicamentoForm: FormGroup;
 
-    scheduled = [];
-    result: any;
-    tipo: false;
-
     constructor(
-        private plt: Platform, 
-        private localNotifications: LocalNotifications, 
-        private actionSheetCtrl: ActionSheetController, 
         private navCtrl: NavController, 
-        private alertCtrl: AlertController,
         public formBuilder: FormBuilder,
         public utilService: UtilService,
         public medicamentoService: MedicamentoService,
@@ -103,6 +94,8 @@ export class AdicionarMedicamentoPage implements OnInit {
             ]
         }
 
+        //ordena a lista...
+        horarios = horarios.sort((a, b) => a.localeCompare(b));
         this.setValueForm({
             "horarios": horarios
         });

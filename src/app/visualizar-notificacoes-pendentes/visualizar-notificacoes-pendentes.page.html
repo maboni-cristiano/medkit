@@ -1,0 +1,41 @@
+<ion-header>
+    <ion-toolbar color="primary">
+        <ion-title>Notificações Pendentes</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="goBack()">
+                <ion-icon name="arrow-round-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+    
+
+<ion-content >
+    <ion-list class="p-bottom-5">
+
+        <ion-card *ngFor="let notif of lista">
+            <ion-grid>
+                <div class="d-flex align-items-center justify-content-center">
+                    <h5>{{notif.title}}</h5>
+                </div>
+                <ion-row>
+                    <ion-text>
+                        Texto: {{notif.text}}
+                    </ion-text>
+                </ion-row>
+                <ion-row *ngIf="notif.group">
+                    <ion-text>
+                        Grupo: {{notif.group}}
+                    </ion-text>
+                </ion-row>
+                <ion-row *ngIf="notif.trigger">
+                    <ion-col>
+                        <ion-text>
+                            Trigger: {{stringify(notif.trigger)}}
+                        </ion-text>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+        </ion-card>
+    </ion-list>
+</ion-content>

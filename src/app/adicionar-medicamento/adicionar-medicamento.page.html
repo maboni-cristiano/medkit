@@ -28,6 +28,7 @@
                     autofocus="true" 
                     placeholder="Digite o nome do seu medicamento"
                     formControlName="nome"
+                    autocapitalize="on"
                 ></ion-input>
             </ion-item>
 
@@ -81,7 +82,7 @@
                 <div text-center lines="none" *ngIf="getValueForm('horarios').length == 0" class="d-flex justify-content-center">
                     <p class="disable-text">Informe os horarios de utilização..</p>
                 </div>
-                <ion-card class="padding-default" *ngFor="let horario of getValueForm('horarios')">
+                <ion-card *ngFor="let horario of getValueForm('horarios')">
                     <ion-item lines="none">
                         <ion-label slot="start">{{horario}}</ion-label>
                         <ion-button slot="end" color="danger" fill="clear" (click)="removerHorario(horario)">

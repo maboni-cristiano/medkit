@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native/local-notifications/ngx';
+import { MedicamentoService } from './medicamento.service';
+import { ConsultaService } from './consulta.service';
 
 @Injectable({
     providedIn: 'root'
@@ -7,7 +9,7 @@ import { LocalNotifications, ELocalNotificationTriggerUnit } from '@ionic-native
 export class NotificacaoService {
 
     constructor(
-        private localNotifications: LocalNotifications
+        private localNotifications: LocalNotifications,
     ) { }
 
     sendNotificacaoAtTime(id: number, title: string, text: string, atTime: Date) {

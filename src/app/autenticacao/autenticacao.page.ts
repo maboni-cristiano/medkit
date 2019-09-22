@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { UsuarioService } from '../services/usuario.service';
 import { UtilService } from '../services/util.service';
 import { MedicamentoService } from '../services/medicamento.service';
+import { ConsultaService } from '../services/consulta.service';
 
 
 @Component({
@@ -20,7 +21,9 @@ export class AutenticacaoPage implements OnInit {
     private navController: NavController,
     private usuarioService: UsuarioService,
     private utilService: UtilService,
-    private medicamentoService: MedicamentoService
+    private medicamentoService: MedicamentoService,
+    private consultaService: ConsultaService,
+    
 ) {
 
 
@@ -37,7 +40,7 @@ export class AutenticacaoPage implements OnInit {
       senha: new FormControl('', Validators.compose([
         Validators.required,
         Validators.maxLength(32),
-        Validators.minLength(6),
+        Validators.minLength(3),
       ])),
 
     })
@@ -69,6 +72,8 @@ export class AutenticacaoPage implements OnInit {
         .then(() => {
             //adiciona notificações para todos os produtos, pq pode ser que ja tenha algum cadastrado, e esteja sem notificacao....
             this.medicamentoService.adicionarNotificacaoParaTodosOsProdutos();
+            this.consultaService.adicionarNotificacaoParaTodasAsConsultas();
+            
         })
         .catch((error) => {
             this.utilService.showToast(error);
