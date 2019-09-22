@@ -47,7 +47,7 @@ export class NovaConsultaPage implements OnInit {
     }
 
     async goBack() {
-        this.navCtrl.navigateBack('consultas');
+        this.navCtrl.back();
     }
 
     async salvar() {
@@ -62,7 +62,7 @@ export class NovaConsultaPage implements OnInit {
         this.consultaService
             .salvar(this.form.value)
             .then(() => {   
-                this.navCtrl.navigateBack('consultas');
+                this.goBack();
             })
             .catch((error) => {
                 this.utilService.showToast(error);
@@ -80,7 +80,7 @@ export class NovaConsultaPage implements OnInit {
             () => {
                 this.consultaService
                     .excluir(consulta)
-                    .then(() => this.navCtrl.navigateBack('consultas'))
+                    .then(() => this.goBack())
                     .catch((error) => this.utilService.showAlert(error))
             }, 
             null

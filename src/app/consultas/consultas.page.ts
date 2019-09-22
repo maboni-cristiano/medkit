@@ -33,10 +33,12 @@ export class ConsultasPage implements OnInit {
     }
 
     async ionViewDidEnter() {
-        this.buscarLista();
+        console.log("ionViewDidEnter")
+        await this.buscarListaConsulta();
+        document.getElementById("content-consulta").click();
     }
 
-    async buscarLista() {
+    async buscarListaConsulta() {
         this.lista = await this.consultaService.buscarTodos();
         this.listaFiltrada = this.lista;
     }
@@ -44,7 +46,7 @@ export class ConsultasPage implements OnInit {
 
 
     async atualizarLista(event: any) {
-        await this.buscarLista();
+        await this.buscarListaConsulta();
 
         setTimeout(() => {
             event.target.complete();
@@ -85,7 +87,7 @@ export class ConsultasPage implements OnInit {
                                 this.consultaService
                                     .excluir(consulta)
                                     .then(async () => {
-                                        await this.buscarLista()
+                                        await this.buscarListaConsulta()
                                         document.getElementById("content-consulta").click();
                                     })
                                     .catch((error) => this.utilService.showAlert(error))

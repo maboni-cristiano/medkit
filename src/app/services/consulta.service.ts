@@ -142,9 +142,6 @@ export class ConsultaService {
 
     removerNotificacoesConsulta(consulta) {
         try {
-            console.log(
-                "entrou para remover"
-            )
     
             this.notificacaoService.removeNotification(
                 consulta.id

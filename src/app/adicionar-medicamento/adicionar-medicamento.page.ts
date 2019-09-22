@@ -64,13 +64,13 @@ export class AdicionarMedicamentoPage implements OnInit {
         this.medicamentoService
             .salvarMedicamento(this.medicamentoForm.value)
             .then(() => {
-                this.navCtrl.navigateBack('seus-medicamentos');
+                this.navCtrl.back();
             })
             .finally(() => loadingCtrl.dismiss());
     }
 
     async cancelarMedicamento() {
-        this.navCtrl.navigateBack('seus-medicamentos');
+        this.navCtrl.back();
     }
 
     addHorario({detail}) {
@@ -141,7 +141,7 @@ export class AdicionarMedicamentoPage implements OnInit {
             () => {
                 this.medicamentoService
                     .excluirMedicamento(medicamento)
-                    .then(() => this.navCtrl.navigateBack('seus-medicamentos'))
+                    .then(() => this.navCtrl.back())
                     .catch((error) => this.utilService.showAlert(error))
             }, 
             null
