@@ -69,7 +69,10 @@ export class NovoUsuarioPage implements OnInit {
             .salvarUsuario(this.form.value)
             .then((response) => {
                 loadingCtrl.dismiss();
-                this.utilService.showAlertWithCallback('Operação realizada com sucesso!', () => this.navController.pop());
+                this.utilService.showAlertWithCallback('Operação realizada com sucesso!', () => {
+                    // this.navController.pop()
+                    this.usuarioService.login(this.form.value);
+                });
             })
             .catch((error) => {
                 loadingCtrl.dismiss();
