@@ -19,13 +19,7 @@ export class NovoUsuarioPage implements OnInit {
         private navController: NavController,
         private usuarioService: UsuarioService,
         private utilService: UtilService,
-        private platform: Platform
     ) {
-
-        // this.platform.backButton.subscribe(() => {
-        //     console.log("gobacjjjjj")
-        //     this.goBack();
-        // });
 
         this.form = formBuilder.group({
             nome: new FormControl('', Validators.compose([
@@ -47,6 +41,8 @@ export class NovoUsuarioPage implements OnInit {
                 Validators.maxLength(12),
                 Validators.minLength(3),
             ])),
+
+            st_notificacao: new FormControl('SIM')
 
         })
 

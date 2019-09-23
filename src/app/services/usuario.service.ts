@@ -133,6 +133,7 @@ export class UsuarioService {
     logout() {
         localStorage.removeItem("usuarioLogado");
         this.authState.next(false);
+        this.notificacaoService.removeAllNotification();
     }
     
     isAuthenticated() {

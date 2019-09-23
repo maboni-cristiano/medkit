@@ -78,7 +78,6 @@ export class AppComponent {
                     });
             } else {
                 this.navController.navigateRoot("autenticacao");
-                this.notificacaoService.removeAllNotification();
             }
         });
 
@@ -98,10 +97,6 @@ export class AppComponent {
             }
 
         } catch (error) { }
-    }
-
-    async verNotificacoes() {
-        this.utilService.showAlert(JSON.stringify(await this.notificacaoService.getAll()));
     }
 
     isLogged() {

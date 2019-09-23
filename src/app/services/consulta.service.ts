@@ -11,7 +11,8 @@ export class ConsultaService {
 
     constructor(
         private notificacaoService: NotificacaoService,
-        private utilService: UtilService
+        private utilService: UtilService,
+        private usuarioService: UsuarioService
     ) { }
 
     buscarTodos() {
@@ -96,7 +97,16 @@ export class ConsultaService {
         });
     }
 
-    adicionarNotificacaoConsulta(consulta, exibirToast = true) {
+    async adicionarNotificacaoConsulta(consulta, exibirToast = true) {
+
+        let usuarioLogado :any = await this.usuarioService.getDadosUsuarioLogado();
+
+        if (usuarioLogado 
+        && usuarioLogado.st_notificacao 
+        && usuarioLogado.st_notificacao === "NAO") {
+            console.log("nao notifica")
+            return;
+        }
 
         try {
             if (consulta) {

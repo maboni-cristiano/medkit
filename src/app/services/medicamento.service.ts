@@ -10,7 +10,8 @@ export class MedicamentoService {
 
     constructor(
         private utilService: UtilService,
-        private notificacaoService: NotificacaoService
+        private notificacaoService: NotificacaoService,
+        private usuarioService: UsuarioService,
     ) { }
 
     salvarMedicamento(data) {
@@ -65,7 +66,17 @@ export class MedicamentoService {
         }
     }
 
-    adicionarNotificacaoHorario(medicamento) {
+    async adicionarNotificacaoHorario(medicamento) {
+
+        let usuarioLogado :any = await this.usuarioService.getDadosUsuarioLogado();
+
+        if (usuarioLogado 
+        && usuarioLogado.st_notificacao 
+        && usuarioLogado.st_notificacao === "NAO") {
+            console.log("nao notifica")
+            return;
+        }
+
         if (medicamento) {
             if (medicamento.horarios && medicamento.horarios.length > 0) {
                 for (let i = 0; i < medicamento.horarios.length; i++) {
