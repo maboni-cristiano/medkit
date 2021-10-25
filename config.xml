@@ -2,7 +2,7 @@
 <widget id="br.com.TCC" version="0.0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MedKit App</name>
     <description>Um app para controlar seus medicamentos e consulta</description>
-    <author email="ademilson.marsiglio@gmail.com">Ademilson</author>
+    <author email="maboni.cristiano@gmail.com">Cristiano</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
