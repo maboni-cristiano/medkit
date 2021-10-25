@@ -1,17 +1,52 @@
 .margin-default {
     margin-top: 15px;
     margin-bottom: 15px;
+    font-size: 20px;
+    color: #086fb4;
 }
 .padding-default {
     padding-top: 15px;
     padding-bottom: 15px;
+    font-size: 20px;
 }
 
 .title-estoque {
-    color: black;
+    font-size: 20px;
+    color: #086fb4;
     padding-left: 10px;
 }
 
+.title-nome{
+    color: #086fb4;
+    padding-left: 15px;
+    font-size: 20px;
+}
+
+.remover-horario{
+    font-size: 17px;
+    color: #086fb4;
+}
+
+
+.horario{
+    font-size: 22px;
+    color: #086fb4;
+}
+
+.title-medida {
+    font-size: 20px;
+    color: #086fb4;
+    padding-left: 15px;
+}
+
+.range{
+    font-size: 20px;
+    --bar-height: 30px;
+    --height: 52px;
+    --knob-size: 30px;
+}
+
 .disable-text {
-    font-size: 0.8rem;
+    color: #086fb4;
+    font-size: 1.2rem;
 }

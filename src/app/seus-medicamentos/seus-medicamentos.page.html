@@ -3,12 +3,12 @@
         <ion-menu-button slot="start"></ion-menu-button>
         <ion-item class="row-filter" lines="none">
             <ion-input
-                #searchbar 
+                #searchbar
                 searchIcon="true"
                 autocapitalize
                 placeholder="Pesquise Medicamentos"
-                [(ngModel)]="nome" 
-                (ionChange)="filtrarItens()" 
+                [(ngModel)]="nome"
+                (ionChange)="filtrarItens()"
                 debounce=200
                 class="searchbar"
             ></ion-input>
@@ -22,53 +22,59 @@
 </ion-header>
 
 <ion-content id="content-medicamentos">
-
     <ion-refresher slot="fixed" (ionRefresh)="atualizarMedicamentos($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"
             refreshingSpinner="dots">
         </ion-refresher-content>
     </ion-refresher>
 
+
     <ion-list>
         <div class="d-flex flex-direction-column align-items-center div-empty-box" *ngIf="!medicamentosFiltrados || medicamentosFiltrados.length === 0">
             <ion-img class="empty-box-img" src="/assets/box.png"></ion-img>
-            <ion-text>Nenhum medicamento encontrado...</ion-text>
+            <ion-text class="fonte-inicio"><b>Nenhum medicamento encontrado...</b></ion-text>
+            <ion-text class="d-flex flex-direction-column adicionar align-items-center animated bounceIn delay-2s"*ngIf="!medicamentosFiltrados || medicamentosFiltrados.length === 0" ><b>Clique no ícone ao lado para adicionar</b></ion-text>
+            <br>
+            <ion-img class="img-dedo-apontando animated infinite slideOutRight delay-3s" src="/assets/dedo.png"></ion-img>
         </div>
         <ion-card *ngFor="let medicamento of medicamentosFiltrados" (click)="showOptionsItem(medicamento)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-grid>
                 <div class="d-flex align-items-center justify-content-space-between">
-                    <h5 class="nome-medicamento">{{medicamento.nome}}</h5>
-                    <ion-icon *ngIf="isMedicamentoEstoqueBaixo(medicamento)" color="warning" size="large" name="alert"></ion-icon>
+                    <h5 class="nome-medicamento"> <b>{{medicamento.nome}} </b> <ion-label class="dados-medicamento">- {{medicamento.miligramas}} {{medicamento.MG}}</ion-label></h5>
+                    <ion-text class="acabando" *ngIf="isMedicamentoEstoqueBaixo(medicamento)" slot ="end" color="warning"><b>Acabando! <ion-icon *ngIf="isMedicamentoEstoqueBaixo(medicamento)" slot="end" color="warning" size="large" name="alert">
+                    </ion-icon></b></ion-text>
+                    <ion-text class="acabou" *ngIf="isMedicamentoSemEstoque(medicamento)" color="danger"><b>Acabou! <ion-icon *ngIf="isMedicamentoSemEstoque(medicamento)" slot="end" color="danger" size="large" name="close"></ion-icon></b></ion-text>
+
                 </div>
+
+
                 <ion-row *ngIf="medicamento.horarios && medicamento.horarios.length > 0">
                     <ion-col>
-                        <ion-text>
+                        <ion-text class="dados-medicamento">
                             Horários: {{medicamento.horarios}}
                         </ion-text>
                     </ion-col>
                 </ion-row>
                 <ion-row>
                     <ion-col size="8">
-                        <ion-text *ngIf="medicamento.dosagem">
-                            Dosagem: {{medicamento.dosagem}} {{medicamento.tipo_dosagem}} 
+                        <ion-text class="dados-medicamento" *ngIf="medicamento.dosagem">
+                            Dosagem: {{medicamento.dosagem}} {{medicamento.tipo_dosagem}}
                         </ion-text>
                     </ion-col>
                     <ion-col size="4">
-                        <ion-text *ngIf="medicamento.estoque" [color]="isMedicamentoEstoqueBaixo(medicamento) ? 'danger' : 'grey'">
-                            Estoque: {{medicamento.estoque}} {{medicamento.tipo_dosagem}} 
+                        <ion-text class="estoque-medicamento" *ngIf="medicamento.estoque" [color]="isMedicamentoEstoqueBaixo(medicamento) ? 'danger' : 'primary'" >
+                            Estoque: {{medicamento.estoque}} {{medicamento.tipo_dosagem}}
                         </ion-text>
                     </ion-col>
                 </ion-row>
             </ion-grid>
-                
+
         </ion-card>
     </ion-list>
-
-
-    <ion-fab class="animated jackInTheBox delay-1s" vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="goAdicionarMedicamento()">
-            <ion-icon name="add"></ion-icon>
+    <ion-fab class=" animated jackInTheBox delay-1s" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button class="fab-button" (click)="goAdicionarMedicamento()">
+            <ion-icon class="icon-fab" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
 </ion-content>

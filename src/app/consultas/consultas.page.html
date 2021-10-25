@@ -3,12 +3,12 @@
         <ion-menu-button slot="start"></ion-menu-button>
         <ion-item class="row-filter" lines="none">
             <ion-input
-                #searchbar 
+                #searchbar
                 searchIcon="true"
                 autocapitalize
                 placeholder="Pesquise Consultas"
-                [(ngModel)]="nome" 
-                (ionChange)="filtrarItens()" 
+                [(ngModel)]="nome"
+                (ionChange)="filtrarItens()"
                 debounce=200
                 class="searchbar"
             ></ion-input>
@@ -23,7 +23,6 @@
 
 
 <ion-content id="content-consulta">
-
     <ion-refresher slot="fixed" (ionRefresh)="atualizarLista($event)">
         <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Arraste para baixo para atualizar"
             refreshingSpinner="dots">
@@ -33,48 +32,55 @@
     <ion-list>
         <div class="d-flex flex-direction-column align-items-center div-empty-box" *ngIf="!listaFiltrada || listaFiltrada.length === 0">
             <ion-img class="empty-box-img" src="/assets/box.png"></ion-img>
-            <ion-text>Nenhuma consulta encontrada...</ion-text>
+            <ion-text class="fonte-inicio"><b>Nenhuma consulta encontrada...</b></ion-text>
+            <ion-text class="d-flex flex-direction-column adicionar align-items-center animated bounceIn delay-2s"*ngIf="!listaFiltrada || listaFiltrada.length === 0" ><b>Clique no ícone ao lado para adicionar</b></ion-text>
+            <br>
+            <ion-img class="img-dedo-apontando animated infinite slideOutRight delay-3s" src="/assets/dedo.png"></ion-img>
         </div>
+
         <ion-card *ngFor="let consulta of listaFiltrada" (click)="showOptionsItem(consulta)">
             <ion-ripple-effect></ion-ripple-effect>
             <ion-grid>
+
                 <div class="d-flex align-items-center justify-content-space-between">
-                    <h5 class="desc-consulta">{{consulta.descricao}}</h5>
+                    <h5 class="desc-consulta"><b>{{consulta.descricao}}</b></h5>
+                    <ion-text class="presente" *ngIf="consultaPresenca(consulta)" color="success" size="large"><b>Presente<ion-icon *ngIf="consultaPresenca(consulta)" slot="end" color="success" size="large" name="checkmark-circle"></ion-icon></b></ion-text>
+                    <ion-text class="nao-presente" *ngIf="consultaNaoPresenca(consulta)" slot="end" color="danger" size="large"><b>Não Presente <ion-icon *ngIf="consultaNaoPresenca(consulta)"  color="danger" size="large" name="close"></ion-icon></b></ion-text>
                 </div>
-                <ion-row>
-                    <ion-col size="8" *ngIf="consulta.data">
-                        <ion-text>
-                            Data: {{formatData(consulta.data)}}
-                        </ion-text>
-                    </ion-col>
-                    <ion-col size="4" *ngIf="consulta.hora">
-                        <ion-text>
-                            Hora: {{formatHora(consulta.hora)}}
+                 <ion-row *ngIf="consulta.medico">
+                    <ion-col>
+                        <ion-text class="dados-consulta">
+                            <b>Médico(a): {{consulta.medico}}</b>
                         </ion-text>
                     </ion-col>
                 </ion-row>
-                <ion-row *ngIf="consulta.medico">
-                    <ion-col>
-                        <ion-text>
-                            Medico: {{consulta.medico}}
+
+                <ion-row>
+                    <ion-col size="8" *ngIf="consulta.data">
+                        <ion-text class="dados-consulta">
+                            Data: {{formatData(consulta.data)}}
+                        </ion-text>
+                    </ion-col>
+                    <ion-col size="10" *ngIf="consulta.hora">
+                        <ion-text class="dados-consulta">
+                            Hora: {{formatHora(consulta.hora)}}
                         </ion-text>
                     </ion-col>
                 </ion-row>
                 <ion-row *ngIf="consulta.observacao">
                     <ion-col>
-                        <ion-text>
+                        <ion-text class="dados-consulta">
                             Observação: {{consulta.observacao}}
                         </ion-text>
                     </ion-col>
                 </ion-row>
             </ion-grid>
+
         </ion-card>
     </ion-list>
-
-
     <ion-fab class="animated jackInTheBox delay-1s" vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button (click)="goFormulario()">
-            <ion-icon name="add"></ion-icon>
+        <ion-fab-button class="fab-button" (click)="goFormulario()">
+        <ion-icon class="icon-fab" name="add"></ion-icon>
         </ion-fab-button>
     </ion-fab>
 </ion-content>

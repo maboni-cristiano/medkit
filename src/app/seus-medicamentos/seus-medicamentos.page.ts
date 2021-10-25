@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ActionSheetController } from '@ionic/angular';
+import { NavController, ActionSheetController, ToastController, AlertController } from '@ionic/angular';
 import { MedicamentoService } from '../services/medicamento.service';
 import { UtilService } from '../services/util.service';
 import { DataProviderService } from '../services/data-provider.service';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Button } from 'protractor';
 
 
 @Component({
@@ -20,10 +21,12 @@ export class SeusMedicamentosPage implements OnInit {
     constructor(
         private navCtrl: NavController,
         private medicamentoService: MedicamentoService,
-        private actionSheetCtrl: ActionSheetController, 
+        private actionSheetCtrl: ActionSheetController,
         public utilService: UtilService,
         public dataProvider: DataProviderService,
         private iab: InAppBrowser,
+        public toastController: ToastController,
+        private alertCtrl: AlertController,
     ) {}
 
     ngOnInit(){}
@@ -62,7 +65,7 @@ export class SeusMedicamentosPage implements OnInit {
         this.navCtrl.navigateForward('adicionar-medicamento');
     }
 
-    async showOptionsItem(medicamento) {
+    async showActionSheetReabastecer(medicamento) {
         let actionSheet = await this.actionSheetCtrl.create({
             header: `Opções para medicamento: ${medicamento.nome}`,
             buttons: [
@@ -75,9 +78,51 @@ export class SeusMedicamentosPage implements OnInit {
                     }
                 },
                 {
+                    text: 'Não',
+                    handler: () => {
+                    }
+                }
+            ]
+        })
+        await actionSheet.present();
+    }
+
+    async showOptionsItem(medicamento) {
+        let actionSheet = await this.actionSheetCtrl.create({
+            header: `Opções para medicamento: ${medicamento.nome}`,
+            buttons: [
+
+                {
+
                     text: 'Registrar Uso',
                     icon: 'pulse',
                     handler: async () => {
+                        if (medicamento.estoque < 1) {
+                        this.utilService.showToastError("Você não possui medicamentos!")
+
+                                let alert = await this.alertCtrl.create({
+                                    header: `Seu medicamento ${medicamento.nome} acabou!`,
+                                    subHeader: `Deseja reabastecer o estoque?`,
+                                    buttons: [
+                                        {
+                                            text: 'SIM',
+                                            handler: () => {
+                                                this.dataProvider.payload = medicamento;
+                                                this.navCtrl.navigateBack('configurar-estoque');
+                                                this.utilService.showAlert("Desça até a opção ESTOQUE para reabastecer!")
+
+                                            }
+                                        },
+                                        {
+                                            text: 'NÃO',
+                                            handler: () => {
+                                            }
+                                        }
+                                    ]
+                                })
+                                await alert.present();
+                            }
+
                         if (medicamento && medicamento.estoque) {
                             let quantidade = medicamento.dosagem;
 
@@ -91,7 +136,9 @@ export class SeusMedicamentosPage implements OnInit {
 
                             if (medicamento.estoque < 0) {
                                 medicamento.estoque = 0;
+
                             }
+
 
                             let loading = await this.utilService.showLoading();
                             loading.present();
@@ -104,7 +151,7 @@ export class SeusMedicamentosPage implements OnInit {
                                 .catch((error) => this.utilService.showToast(error))
                                 .finally(() => loading.dismiss())
                         } else {
-                            
+
                         }
                     }
                 },
@@ -113,7 +160,7 @@ export class SeusMedicamentosPage implements OnInit {
                     icon: 'paper',
                     handler: () => {
                         let nome = medicamento.nome;
-                        
+
                         if (nome) {
                             nome = nome.toLowerCase();
                             nome = this.utilService.retira_acentos(nome);
@@ -122,6 +169,23 @@ export class SeusMedicamentosPage implements OnInit {
                             const browser = this.iab.create(`https://consultaremedios.com.br/${nome}/bula`);
                             browser.show()
                         }
+                    }
+                },
+                {
+                    text: 'Reabastecer Estoque',
+                    icon: 'battery-charging',
+                    handler: () => {
+                        this.dataProvider.payload = medicamento;
+                        this.navCtrl.navigateBack('adicionar-medicamento');
+                        this.utilService.showAlert("Desça até a opção ESTOQUE para reabastecer!");
+                    }
+                },
+                {
+                    text: 'Editar',
+                    icon: 'create',
+                    handler: () => {
+                        this.dataProvider.payload = medicamento;
+                        this.navCtrl.navigateBack('adicionar-medicamento');
                     }
                 },
                 {
@@ -140,10 +204,10 @@ export class SeusMedicamentosPage implements OnInit {
                                         document.getElementById("content-medicamentos").click();
                                     })
                                     .catch((error) => this.utilService.showAlert(error))
-                            }, 
+                            },
                             null
                         );
-                        
+
                     }
                 },
                 {
@@ -162,7 +226,7 @@ export class SeusMedicamentosPage implements OnInit {
                 if (medicamento.lembrete && medicamento.estoque) {
                     const lembrete = parseFloat(medicamento.lembrete);
                     const estoque = parseFloat(medicamento.estoque);
-    
+
                     if (estoque <= lembrete) {
                         return true;
                     }
@@ -171,7 +235,26 @@ export class SeusMedicamentosPage implements OnInit {
         } catch(e) {
             console.log("erro ao verificar estoque baixo", e);
         }
+    }
+        isMedicamentoSemEstoque(medicamento) {
+            try {
+                if (medicamento) {
+                        if (medicamento.estoque == 0) {
+                            return true;
+                    }
+                }
+            } catch (e) {
+                console.log("erro ao verificar estoque baixo", e);
+            }
 
         return false;
     }
+    async presentToast() {
+        const toast = await this.toastController.create({
+            message: 'Your settings have been saved.',
+            duration: 2000
+        });
+        toast.present();
+    }
 }
+

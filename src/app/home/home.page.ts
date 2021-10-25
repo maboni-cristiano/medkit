@@ -15,11 +15,11 @@ export class HomePage implements OnInit{
 
   ngOnInit() {
   }
-  
+
   openAdicionarMedicamento(){
     this.navCtrl.navigateForward('adicionar-medicamento');
   }
-    openSeusMedicamentos(){
+  openSeusMedicamentos(){
       this.navCtrl.navigateForward('seus-medicamentos');
 
 }

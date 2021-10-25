@@ -39,6 +39,7 @@ export class AppComponent {
             icon: 'contacts'
         },
         {
+
             title: 'Configurações',
             url: '/configuracoes',
             icon: 'settings'
@@ -63,7 +64,7 @@ export class AppComponent {
         private actionSheetController: ActionSheetController,
         private popoverCtrl: PopoverController,
         private router: Router,
-    ) { 
+    ) {
 
         this.usuarioService.authState.subscribe(state => {
             if (state) {
@@ -145,7 +146,7 @@ export class AppComponent {
 
             } catch (error) {}
 
-            let podeFecharAppAoVoltar = 
+            let podeFecharAppAoVoltar =
                        this.router.url === '/'
                     || this.router.url === '/login'
                     || this.router.url === '/consultas'
@@ -156,12 +157,12 @@ export class AppComponent {
                 this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
                     if (outlet && outlet.canGoBack()) {
                          return outlet.pop();
-                     } 
-     
+                     }
+
                      if (podeFecharAppAoVoltar) {
                          if (new Date().getTime() - this.lastTimeBackPress < this.timePeriodToExit) {
                              navigator['app'].exitApp(); // work in ionic 4
-     
+
                          } else {
                              this.utilService.showToast(`Pressione novamente para fechar o app.`)
                              this.lastTimeBackPress = new Date().getTime();

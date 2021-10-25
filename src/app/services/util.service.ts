@@ -1,6 +1,7 @@
 
 import { Injectable } from '@angular/core';
-import { ToastController, AlertController, ModalController, LoadingController } from '@ionic/angular';
+import { ToastController, AlertController, ModalController, LoadingController, NavController } from '@ionic/angular';
+import { DataProviderService } from './data-provider.service';
 
 
 @Injectable({
@@ -12,6 +13,8 @@ export class UtilService {
         private toastCtrl: ToastController,
         private alertCtrl: AlertController,
         private loadingCtrl: LoadingController,
+        private navCtrl: NavController,
+        private dataProvider: DataProviderService,
 
 
     ) { }
@@ -90,6 +93,24 @@ export class UtilService {
         toast.present();
     }
 
+    async showToastError(message: string, duration = 3000) {
+        const toast = await this.toastCtrl.create({
+            message: message,
+            duration: duration,
+            color: 'danger',
+        });
+        toast.present();
+    }
+
+    async showToastSuccess(message: string, duration = 3000) {
+        const toast = await this.toastCtrl.create({
+            message: message,
+            duration: duration,
+            color: 'success',
+        });
+        toast.present();
+    }
+
     async showToastCallBack(message: string, duration = 2000, callback) {
         const toast = await this.toastCtrl.create({
             message: message,
@@ -110,7 +131,7 @@ export class UtilService {
         return navigator.onLine;
     }
 
-    
+
 
     hashCode(s: any): number {
         let h = 0;
@@ -138,10 +159,10 @@ export class UtilService {
 
     /**
      * Minimo Dois digitos.
-     * 
+     *
      * Se menor igual a 9 fica 09
      * Se o tamanho (lengt) menor que 2 adiciona 0 depois.
-     * 
+     *
      * @param {type} valor
      * @returns {String}
      */
@@ -169,15 +190,15 @@ export class UtilService {
         }
 
         return valor;
-    }  
+    }
 
     public static timeToMinute(time: string): number {
-        if (!time) 
+        if (!time)
             return 0;
-        
+
         const hour = parseInt(time.substring(0, time.indexOf(":")));
         const minute = parseInt(time.substring(time.indexOf(":") + 1));
-        
+
         return (hour * 60) + minute;
     }
 
@@ -185,7 +206,7 @@ export class UtilService {
     retira_acentos(str) {
         let com_acento = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝŔÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿŕ";
         let sem_acento = "AAAAAAACEEEEIIIIDNOOOOOOUUUUYRsBaaaaaaaceeeeiiiionoooooouuuuybyr";
-    
+
         let novastr = "";
         for(let i=0; i<str.length; i++) {
             let troca=false;
@@ -202,7 +223,7 @@ export class UtilService {
         }
 
         return novastr;
-    } 
+    }
 
 
 }

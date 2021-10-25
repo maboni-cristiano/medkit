@@ -16,38 +16,40 @@
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
-    
+
+
     <ion-content>
         <div class="d-flex justify-content-center p-top-2">
             <ion-img style="max-width: 200px" src="/assets/medico.png"></ion-img>
         </div>
-        
+
         <form [formGroup]="form" class="p-bottom-5" >
+            <h4 class="title-consulta"><b>Descrição</b></h4>
             <ion-card>
-                
                 <ion-item>
-                    <ion-label position="floating">Descrição</ion-label>
-                    <ion-input 
-                        class="margin-default" 
-                        clearInput 
-                        autofocus="true" 
+                    <ion-input class="placeholder-consulta"
+                        maxlength= "20"
+                        type= "text"
+                        clearInput
+                        autofocus="true"
                         autocapitalize="on"
                         placeholder="Digite um titulo para a consulta..."
                         formControlName="descricao"
+
                     ></ion-input>
                 </ion-item>
             </ion-card>
-    
+            <h4 class="title-consulta"><b>Data da consulta</b></h4>
             <ion-card>
                 <ion-item lines="none">
-                    <ion-label position="floating">Data da consulta</ion-label>
-                    <ion-datetime 
+                    <ion-datetime
+                        class="data-hora-consulta"
                         min="2018-01"
-                        max="2030"                
+                        max="2030"
                         displayFormat="DD/MM/YYYY"
                         pickerFormat= "DD MMM YYYY"
                         monthShortNames="Jan, Fev, Mar, Abr, Mai, Jun, Jul, Ago, Set, Out, Nov, Dez"
-                        doneText="OK" 
+                        doneText="OK"
                         cancelText="Cancelar"
                         placeholder="Selecione"
                         formControlName="data"
@@ -55,26 +57,25 @@
                 </ion-item>
             </ion-card>
 
-    
+            <h4 class="title-consulta"><b>Hora da consulta</b></h4>
                 <ion-card>
                     <ion-item lines="none">
-                        <ion-label position="floating">Hora da consulta</ion-label>
-                        <ion-datetime 
-                            placeholder="Adicionar" 
-                            cancelText="Cancelar" 
-                            doneText="OK" 
+                        <ion-datetime
+                        class="data-hora-consulta"
+                            placeholder="Adicionar"
+                            cancelText="Cancelar"
+                            doneText="OK"
                             display-format="HH:mm"
                             formControlName="hora"
                         ></ion-datetime>
                     </ion-item>
                 </ion-card>
-            
-            
+
+            <h4 class="title-consulta"><b>Médico</b></h4>
             <ion-card>
                 <ion-item>
-                    <ion-label position="floating">Médico</ion-label>
-                    <ion-input 
-                        class="margin-default" 
+                    <ion-input
+                    class="placeholder-consulta"
                         placeholder="Digite o nome do médico..."
                         formControlName="medico"
                         autocapitalize="on"
@@ -82,12 +83,12 @@
                     ></ion-input>
                 </ion-item>
             </ion-card>
+            <h4 class="title-consulta"><b>Observação</b></h4>
             <ion-card>
                 <ion-item>
-                    <ion-label position="floating">Observação</ion-label>
-                    <ion-textarea 
+                    <ion-textarea
+                    class="placeholder-consulta"
                         autocapitalize="on"
-                        class="margin-default" 
                         rows="6"
                         clearInput
                         placeholder="Informe uma observação se desejar..."
@@ -96,4 +97,8 @@
                 </ion-item>
             </ion-card>
         </form>
+        <ion-button expand="block" size="large" class="animated fadeInRightBig" (click)="salvar()">
+            <b>Salvar</b>
+            <ion-icon name="checkmark"></ion-icon>
+        </ion-button>
     </ion-content>

@@ -1,25 +1,38 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Configurar Estoque</ion-title>
-     <ion-buttons slot= "end">
-      <ion-button (click)="salvarEstoque()">
-        <ion-icon name = "checkmark" size = "large"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-title>Medicamentos</ion-title>
+        <ion-buttons slot="start">
+            <ion-button (click)="cancelarMedicamento()">
+                <ion-icon name="arrow-round-back"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-button class="animated fadeInRightBig delay-1s" *ngIf="isEdicao()" (click)="excluirMedicamento()">
+                <ion-icon name="trash"></ion-icon>
+            </ion-button>
+            <ion-button class="animated fadeInRightBig" (click)="salvarMedicamento()">
+                <ion-icon name="checkmark"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
- <h5 text-center><b>Quantidade de remédios da caixa</b></h5>
-<ion-item>
-    <ion-input
-    type = "number" placeholder="Digite a quantidade do estoque"></ion-input>
-  </ion-item>
- <h5 text-center><b>Lembrete de Reabastecimento</b></h5>
-  <ion-item>
-  <ion-range pin= "true" min = "1">
-    <ion-label slot = "start">min</ion-label>
-    <ion-label slot = "end">máx</ion-label>
-  </ion-range>
-</ion-item>
+    <form [formGroup]="medicamentoForm">
+        <ion-item-group class="p-bottom-5">
+            <br>
+            <ion-card>
+                <h5 color="primary" class="title-estoque"><b>Quantidade em Estoque</b></h5>
+                <ion-item>
+                <ion-input class="margin-default" type="tel" placeholder="Informe a quantidade que possui" maxlength="4" size="4" formControlName="estoque">
+                    </ion-input>
+                </ion-item>
+            </ion-card>
+        </ion-item-group>
+    </form>
+    <ion-button expand="block" size="large" class="animated fadeInRightBig"
+        (click)="salvarMedicamento()">
+        <b>Salvar</b>
+        <ion-icon name="checkmark"></ion-icon>
+    </ion-button>
 </ion-content>

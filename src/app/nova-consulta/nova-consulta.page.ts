@@ -17,11 +17,11 @@ export class NovaConsultaPage implements OnInit {
     constructor(
         public formBuilder: FormBuilder,
         public dataProvider: DataProviderService,
-        private navCtrl: NavController, 
+        private navCtrl: NavController,
         public utilService: UtilService,
         private consultaService: ConsultaService
 
-    ) { 
+    ) {
 
         this.form = formBuilder.group({
             id: new FormControl(''),
@@ -34,6 +34,7 @@ export class NovaConsultaPage implements OnInit {
             hora: new FormControl(''),
             medico: new FormControl(''),
             observacao: new FormControl(''),
+            consultaPresenca: new FormControl(''),
           })
     }
 
@@ -41,8 +42,8 @@ export class NovaConsultaPage implements OnInit {
         const {payload} = this.dataProvider;
 
         if (payload) {
-            this.setValueForm(payload); 
-            this.dataProvider.payload = null;   
+            this.setValueForm(payload);
+            this.dataProvider.payload = null;
         }
     }
 
@@ -61,7 +62,7 @@ export class NovaConsultaPage implements OnInit {
 
         this.consultaService
             .salvar(this.form.value)
-            .then(() => {   
+            .then(() => {
                 this.goBack();
             })
             .catch((error) => {
@@ -69,9 +70,9 @@ export class NovaConsultaPage implements OnInit {
             })
             .finally(() => {
                 loadingCtrl.dismiss();
-            })       
+            })
     }
-    
+
     excluir() {
         const consulta = this.form.value;
 
@@ -82,7 +83,7 @@ export class NovaConsultaPage implements OnInit {
                     .excluir(consulta)
                     .then(() => this.goBack())
                     .catch((error) => this.utilService.showAlert(error))
-            }, 
+            },
             null
         );
     }
@@ -102,7 +103,7 @@ export class NovaConsultaPage implements OnInit {
             var attrValue = obj[key];
 
             const field = this.form.get(attrName);
-            
+
             if (field)
                 field.setValue(attrValue);
         }

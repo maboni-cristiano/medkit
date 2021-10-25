@@ -5,11 +5,60 @@
 
 .searchbar {
     --placeholder-color: white;
-    --placeholder-opacity: 0.9;
+    --placeholder-opacity: 2;
 }
 
 .nome-medicamento {
+    color: #086fb4;
     padding-left: 5px;
+    font-size:22px;
+}
+
+.dados-medicamento{
+    color: #086fb4;
+    font-size: 18px;
+
+}
+
+.adicionar{
+    padding-top: 300px;
+    font-size: 20px;
+    color: #086fb4;
+}
+
+.icon-fab{
+    font-size: 40px;
+}
+
+.sim-estoque{
+    font-size: 100px;
+}
+
+.fonte-inicio{
+    font-size: 25px;
+    color: #086fb4;
+}
+
+
+.estoque-medicamento{
+    font-size: 18px;
+}
+
+.acabando{
+    padding-left: 50px;
+    padding-right: 0px;
+    font-size: 19px;
+}
+.acabou{
+    padding-left: 50px;
+    padding-right: 0px;
+    font-size: 19px;
+}
+
+
+.fab-button{
+    width: 70px;
+    height: 70px;
 }
 
 .img-warning-estoque {

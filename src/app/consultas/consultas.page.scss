@@ -3,11 +3,54 @@
     color: white;
 }
 
+.title-consulta{
+    color: #086fb4;
+}
+
 .searchbar {
     --placeholder-color: white;
-    --placeholder-opacity: 0.9;
+    --placeholder-opacity: 2;
+}
+
+.presente {
+    padding-left: 100px;
+    padding-right: 0px;
+    font-size: 15px;
+}
+
+.fonte-inicio{
+    font-size: 25px;
+    color: #086fb4;
+}
+
+.icon-fab{
+    font-size: 40px;
+}
+
+.adicionar{
+    padding-top: 300px;
+    font-size: 20px;
+    color: #086fb4;
+}
+.nao-presente{
+    padding-left: 100px;
+    padding-right: 0px;
+    font-size: 16px;
+
+}
+
+.fab-button{
+    width: 70px;
+    height: 70px;
 }
 
 .desc-consulta {
+    color: #086fb4;
     padding-left: 5px;
+    font-size:22px;
+}
+
+.dados-consulta{
+    color: #086fb4;
+    font-size: 18px;
 }

@@ -15,15 +15,16 @@ import { DataProviderService } from '../services/data-provider.service';
 export class AdicionarMedicamentoPage implements OnInit {
 
     public medicamentoForm: FormGroup;
+    _horario = "";
 
     constructor(
-        private navCtrl: NavController, 
+        private navCtrl: NavController,
         public formBuilder: FormBuilder,
         public utilService: UtilService,
         public medicamentoService: MedicamentoService,
         public dataProvider: DataProviderService,
     ) {
-        
+
         this.medicamentoForm = formBuilder.group({
             id: new FormControl(''),
             nome: new FormControl('', Validators.compose([
@@ -31,13 +32,16 @@ export class AdicionarMedicamentoPage implements OnInit {
               Validators.maxLength(100),
               Validators.minLength(3),
             ])),
-            tipo_medicamento: new FormControl('continuo'),
+            tipo_medicamento: new FormControl(''),
             duracao: new FormControl(''),
             horarios: new FormControl([]),
-            tipo_dosagem: new FormControl('CP'),
+            tipo_dosagem: new FormControl(''),
             dosagem: new FormControl(''),
             estoque: new FormControl(''),
-            lembrete: new FormControl('2'),      
+            miligramas: new FormControl(''),
+            MG: new FormControl(''),
+            lembrete: new FormControl('2'),
+            horario: ['']
           })
     }
 
@@ -45,8 +49,8 @@ export class AdicionarMedicamentoPage implements OnInit {
         const {payload} = this.dataProvider;
 
         if (payload) {
-            this.setValueForm(payload); 
-            this.dataProvider.payload = null;   
+            this.setValueForm(payload);
+            this.dataProvider.payload = null;
         }
     }
 
@@ -74,16 +78,20 @@ export class AdicionarMedicamentoPage implements OnInit {
     }
 
     addHorario({detail}) {
+
+        if (!detail.value || detail.value === null)
+            return;
+
         const time = moment(detail.value).format("HH:mm");
 
         console.log(event);
         let horarios = this.getValueForm("horarios");
 
         if (horarios) {
-
             const idx = horarios.indexOf(time);
 
             if (idx >= 0) {
+                this.setValueForm({"horario": null});
                 return this.utilService.showToast("Horário informado já existe");
             }
 
@@ -97,10 +105,10 @@ export class AdicionarMedicamentoPage implements OnInit {
         //ordena a lista...
         horarios = horarios.sort((a, b) => a.localeCompare(b));
         this.setValueForm({
-            "horarios": horarios
+            "horarios": horarios,
+            "horario": null
         });
     }
-
     removerHorario(horario) {
         console.log(horario);
         let horarios = this.getValueForm("horarios");
@@ -111,7 +119,7 @@ export class AdicionarMedicamentoPage implements OnInit {
             if (idx >= 0) {
                 horarios.splice(idx, 1);
             }
-        } 
+        }
 
         this.setValueForm({
             "horarios": horarios
@@ -122,6 +130,35 @@ export class AdicionarMedicamentoPage implements OnInit {
         const tipo = this.getValueForm('tipo_medicamento');
 
         if (tipo && tipo === "temporario") {
+            return true;
+        }
+
+        return false;
+    }
+
+    visualizarMiligramas() {
+        const tipo = this.getValueForm('tipo_dosagem');
+
+        if (tipo && tipo === "CP") {
+            return true;
+        }
+
+        return false;
+    }
+
+    visualizarCP() {
+        const tipo = this.getValueForm('tipo_dosagem');
+
+        if (tipo && tipo === "CP") {
+            return true;
+        }
+
+        return false;
+    }
+     visualizarML() {
+        const tipo = this.getValueForm('tipo_dosagem');
+
+        if (tipo && tipo === "ML") {
             return true;
         }
 
@@ -143,7 +180,7 @@ export class AdicionarMedicamentoPage implements OnInit {
                     .excluirMedicamento(medicamento)
                     .then(() => this.navCtrl.back())
                     .catch((error) => this.utilService.showAlert(error))
-            }, 
+            },
             null
         );
     }
@@ -158,9 +195,12 @@ export class AdicionarMedicamentoPage implements OnInit {
             var attrValue = obj[key];
 
             const field = this.medicamentoForm.get(attrName);
-            
+
             if (field)
                 field.setValue(attrValue);
         }
+    }
+    openConfigurarEstoque() {
+        this.navCtrl.navigateForward('configurar-estoque');
     }
 }

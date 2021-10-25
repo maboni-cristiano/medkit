@@ -18,7 +18,7 @@ export class ConsultaService {
     buscarTodos() {
         return new Promise<any[]>((resolve, reject) => {
             const idUsuarioLogado = UsuarioService.getIdUsuarioLogado();
-            let dbCollectionText = localStorage.getItem(`${idUsuarioLogado}/consultas`);      
+            let dbCollectionText = localStorage.getItem(`${idUsuarioLogado}/consultas`);
 
             if (dbCollectionText) {
                 let collection = JSON.parse(dbCollectionText);
@@ -101,8 +101,8 @@ export class ConsultaService {
 
         let usuarioLogado :any = await this.usuarioService.getDadosUsuarioLogado();
 
-        if (usuarioLogado 
-        && usuarioLogado.st_notificacao 
+        if (usuarioLogado
+        && usuarioLogado.st_notificacao
         && usuarioLogado.st_notificacao === "NAO") {
             console.log("nao notifica")
             return;
@@ -112,15 +112,16 @@ export class ConsultaService {
             if (consulta) {
                 if (consulta.data) {
                     let momentDate = moment(consulta.data);
-                    
+
                     if (consulta.hora) {
                         let momentHora = moment(consulta.hora);
                         momentDate.hour(momentHora.hour());
                         momentDate.minute(momentHora.minute());
 
+
                         let momentComparacao = moment(momentDate);
-                        momentComparacao.subtract(30, 'minute');
-                        
+                        momentComparacao.subtract(60, 'minute');
+
                         if (momentComparacao.isAfter(moment())) {
                             momentDate = momentComparacao;
                         }
@@ -136,7 +137,7 @@ export class ConsultaService {
                             `Sua consulta: ${consulta.descricao} é hoje` + (consulta.hora ? ` as ${this.formatHora(consulta.hora)}.` : '.'),
                             momentDate.toDate()
                         );
-    
+
                         if (exibirToast)
                             this.utilService.showToast(`Você será notificado em: ${momentDate.format("DD/MM/YY HH:mm")}`)
                     } else {
@@ -152,7 +153,7 @@ export class ConsultaService {
 
     removerNotificacoesConsulta(consulta) {
         try {
-    
+
             this.notificacaoService.removeNotification(
                 consulta.id
             );
@@ -179,7 +180,7 @@ export class ConsultaService {
     formatHora(data) {
         if (!data)
             return data;
-            
+
         return moment(data).format("HH:mm");
     }
-}
+    }
